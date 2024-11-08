@@ -1,9 +1,9 @@
 package bootstrap
 
 import (
-	"net/http"
-	"time"
+	"fmt"
 
+	"github.com/Ndraaa15/diabetix-server/pkg/env"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
 	"go.uber.org/dig"
@@ -14,26 +14,31 @@ type Handler interface {
 	InitRoutes(app router.Party)
 }
 
-type HandlerParams struct {
-	dig.In
+type HandlerOut struct {
+	dig.Out
 	Handlers []Handler `group:"handlers"`
 }
 
-func Run(iris *iris.Application, zap *zap.Logger, params HandlerParams) {
-	group := iris.Party("/api/v1")
+type BootstrapParams struct {
+	dig.In
+	Srv      *iris.Application
+	Zap      *zap.Logger
+	Env      *env.Env
+	Handlers []Handler `group:"handlers"`
+}
+
+func Run(params BootstrapParams) {
+	params.Srv.Get("/", func(ctx iris.Context) {
+		ctx.JSON(iris.Map{"message": "Hello, world🌍"})
+	})
+
+	group := params.Srv.Party("/api/v1")
 	for _, handler := range params.Handlers {
 		handler.InitRoutes(group)
 	}
 
-	srv := &http.Server{
-		Addr:         ":8080",
-		Handler:      iris,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
-	}
-
-	zap.Sugar().Info("Server is running on port 8080...")
-	if err := srv.ListenAndServe(); err != nil {
-		zap.Sugar().Fatal("Server failed to start:", err)
+	params.Zap.Sugar().Info("Server is running on port 8080...")
+	if err := params.Srv.Run(iris.Addr(fmt.Sprintf("%s:%s", params.Env.AppAddr, params.Env.AppPort))); err != nil {
+		params.Zap.Sugar().Fatal("Server failed to start:", err)
 	}
 }

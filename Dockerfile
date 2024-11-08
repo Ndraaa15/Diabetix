@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine AS build
+FROM golang:1.23-alpine AS build
 
 WORKDIR /app
 
@@ -16,10 +16,12 @@ RUN apk --update add ca-certificates curl && rm -rf /var/cache/apk/* && apk add 
 
 WORKDIR /app
 
+RUN mkdir template
+
 EXPOSE 8080
 
 COPY --from=build /app/main /app/.env ./
 
-COPY --from=build /app/pkg/template /app
+COPY --from=build /app/template ./template
 
 CMD ["./main"]

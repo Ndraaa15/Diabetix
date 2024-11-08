@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/Ndraaa15/diabetix-server/cmd/bootstrap"
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
 	"github.com/Ndraaa15/diabetix-server/pkg/util"
@@ -16,7 +17,7 @@ type AuthHandler struct {
 	authUsecase usecase.IAuthUsecase
 }
 
-func NewAuthHandler(authUsecase usecase.IAuthUsecase) *AuthHandler {
+func NewAuthHandler(authUsecase usecase.IAuthUsecase) bootstrap.Handler {
 	return &AuthHandler{
 		authUsecase: authUsecase,
 	}

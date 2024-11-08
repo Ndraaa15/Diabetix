@@ -48,7 +48,7 @@ func (uc *AuthUsecase) Register(ctx context.Context, req dto.RegisterRequest) (s
 		return "", errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("password and confirm password must be the same").WithError(errors.New("password and confirm password must be the same"))
 	}
 
-	birth, err := time.Parse("2006-01-02", req.Birth)
+	birth, err := time.Parse("02-01-2006", req.Birth)
 	if err != nil {
 		return "", errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("invalid birth date format").WithError(err)
 	}
@@ -71,7 +71,7 @@ func (uc *AuthUsecase) Register(ctx context.Context, req dto.RegisterRequest) (s
 		return "", errx.New().WithCode(iris.StatusInternalServerError).WithMessage("failed to create user").WithError(err)
 	}
 
-	code, err := util.GenerateCode(4)
+	code, err := util.GenerateCode(5)
 	err = uc.bigCache.Set(data.ID, []byte(code))
 	if err != nil {
 		return "", errx.New().WithCode(iris.StatusInternalServerError).WithMessage("failed to set cache").WithError(err)
@@ -83,7 +83,6 @@ func (uc *AuthUsecase) Register(ctx context.Context, req dto.RegisterRequest) (s
 	err = uc.gomail.SetBodyHTML("verification_code.html", struct{ Code string }{Code: code})
 	if err != nil {
 		return "", err
-
 	}
 
 	err = uc.gomail.Send()
@@ -133,7 +132,7 @@ func (uc *AuthUsecase) Login(ctx context.Context, req dto.LoginRequest) (dto.Sig
 		return dto.SignInResponse{}, errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("user not verified").WithError(errors.New("user not verified"))
 	}
 
-	if err := bcrypt.ComparePassword(req.Password, user.Password); err != nil {
+	if err := bcrypt.ComparePassword(user.Password, req.Password); err != nil {
 		return dto.SignInResponse{}, errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("invalid password").WithError(err)
 	}
 

@@ -2,7 +2,7 @@ include .env
 
 .PHONY: build
 build:
-	go build -o bin/$(APP_NAME) cmd/app/main.go
+	go build -o bin/$(APP_NAME).exe cmd/app/main.go
 
 .PHONY: air
 air: 

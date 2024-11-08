@@ -21,6 +21,9 @@ type Env struct {
 	CloudinaryApiKey    string `mapstructure:"CLOUDINARY_API_KEY"`
 	CloudinaryApiSecret string `mapstructure:"CLOUDINARY_API_SECRET"`
 	CloudinaryFolder    string `mapstructure:"CLOUDINARY_FOLDER"`
+	AppName             string `mapstructure:"APP_NAME"`
+	AppAddr             string `mapstructure:"APP_ADDR"`
+	AppPort             string `mapstructure:"APP_PORT"`
 }
 
 func New() *Env {

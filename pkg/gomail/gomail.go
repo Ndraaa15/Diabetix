@@ -16,7 +16,7 @@ type Gomail struct {
 	htmlPath string
 }
 
-func NewGomail(env env.Env) *Gomail {
+func NewGomail(env *env.Env) *Gomail {
 	return &Gomail{
 		message:  gomail.NewMessage(),
 		dialer:   gomail.NewDialer(env.EmailHost, env.EmailPort, env.EmailSender, env.EmailPassword),

@@ -12,6 +12,7 @@ import (
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
 	"github.com/Ndraaa15/diabetix-server/pkg/config"
 	"github.com/Ndraaa15/diabetix-server/pkg/env"
+	"github.com/Ndraaa15/diabetix-server/pkg/gomail"
 	"go.uber.org/dig"
 	"go.uber.org/zap"
 )
@@ -30,6 +31,7 @@ func main() {
 	mustProvide(config.NewZap)
 	mustProvide(config.NewGorm)
 	mustProvide(config.NewBigCache)
+	mustProvide(gomail.NewGomail)
 	mustProvide(env.New)
 
 	mustProvide(store.NewAuthStore)
@@ -44,7 +46,7 @@ func main() {
 	}
 
 	if err := c.Invoke(bootstrap.Run); err != nil {
-		panic(err)
+		zap.S().Fatal(err)
 	}
 }
 
