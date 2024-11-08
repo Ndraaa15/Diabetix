@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: backend
+    container_name: backend-diabetix
     ports:
       - "8080:8080"
     networks:
@@ -20,7 +20,7 @@ services:
 
   db:
     image: postgres:latest
-    container_name: db
+    container_name: db-diabetix
     env_file:
       - .env
     environment:
