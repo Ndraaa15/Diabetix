@@ -65,6 +65,7 @@ func (uc *AuthUsecase) Register(ctx context.Context, req dto.RegisterRequest) (s
 		Birth:    birth,
 		IsActive: false,
 		Password: hashedPassword,
+		LevelID:  1,
 	}
 
 	if err := uc.authStore.CreateUser(ctx, data); err != nil {
