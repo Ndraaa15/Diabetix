@@ -13,7 +13,7 @@ func ArticleSeeder() Seeder {
 			{
 				ID:       1,
 				Title:    "Manfaat Pola Makan Seimbang",
-				Category: domain.ArticleCategoryHealth,
+				Category: "Food",
 				Body: `
 	## Pentingnya Pola Makan Seimbang
 	Mengadopsi pola makan seimbang sangat penting untuk menjaga kesehatan dan kebugaran tubuh. Dengan mengonsumsi makanan yang mengandung nutrisi lengkap, kita dapat mendukung fungsi tubuh secara optimal.
@@ -31,7 +31,7 @@ func ArticleSeeder() Seeder {
 			{
 				ID:       2,
 				Title:    "Olahraga Terbaik untuk Membangun Kekuatan",
-				Category: domain.ArticleCategorySport,
+				Category: "Sport",
 				Body: `
 	## Panduan Dasar Membangun Kekuatan
 	Membangun kekuatan fisik sangat penting untuk menjaga kebugaran dan meningkatkan kualitas hidup. Beberapa latihan yang efektif untuk membangun kekuatan meliputi squat, push-up, dan deadlift.
@@ -49,7 +49,7 @@ func ArticleSeeder() Seeder {
 			{
 				ID:       3,
 				Title:    "Resep Smoothie Sehat dan Lezat",
-				Category: domain.ArticleCategoryFood,
+				Category: "Food",
 				Body: `
 	## Smoothie Sehat untuk Menyegarkan Hari Anda
 	Smoothie adalah minuman yang menyegarkan dan kaya nutrisi, sangat cocok untuk memulai hari atau dinikmati di siang hari yang panas. Kombinasi buah dan sayuran dalam smoothie dapat memberikan asupan vitamin dan mineral penting bagi tubuh.

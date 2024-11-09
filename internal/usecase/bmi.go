@@ -13,7 +13,7 @@ type BMIUsecase struct {
 	gemini   *gemini.Gemini
 }
 
-func NewBMIUsecase(bmiStore store.IBMIStore, gemini *gemini.Gemini) ITrackerUsecase {
+func NewBMIUsecase(bmiStore store.IBMIStore, gemini *gemini.Gemini) IBMIUsecase {
 	return &BMIUsecase{
 		bmiStore: bmiStore,
 		gemini:   gemini,

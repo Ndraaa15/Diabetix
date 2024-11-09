@@ -22,6 +22,7 @@ func UserSeeder() Seeder {
 
 		users := []domain.User{
 			{
+				ID:       "1854723870678847488",
 				Name:     "Gede Indra Adi Brata",
 				Email:    "indrabrata599@gmail.com",
 				Password: hashedPassword,
@@ -29,7 +30,7 @@ func UserSeeder() Seeder {
 				IsActive: true,
 			},
 			{
-				ID:       "d296f037-e55d-400f-8fb6-21dc97cc8fad",
+				ID:       "1854724598575140864",
 				Name:     "Paula Sugiarto",
 				Email:    "paulaaaa@gmail.com",
 				Password: hashedPassword,
@@ -37,7 +38,7 @@ func UserSeeder() Seeder {
 				IsActive: true,
 			},
 			{
-				ID:       "5d4bc029-2d99-4fa2-b853-e24febafee1d",
+				ID:       "1854763141305470976",
 				Name:     "Handedius Sando Sianipar",
 				Email:    "sandogi@gmail.com",
 				Password: hashedPassword,

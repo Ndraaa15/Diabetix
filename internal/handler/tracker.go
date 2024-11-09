@@ -1,9 +1,13 @@
 package handler
 
 import (
+	"context"
+	"time"
+
 	"github.com/Ndraaa15/diabetix-server/cmd/bootstrap"
 	"github.com/Ndraaa15/diabetix-server/internal/middleware"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
+	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
 )
 
@@ -20,35 +24,37 @@ func NewTrackerHandler(trackerUsecase usecase.ITrackerUsecase) bootstrap.Handler
 func (h *TrackerHandler) InitRoutes(app router.Party) {
 	group := app.Party("/tracker")
 	group.Use(middleware.Authentication())
-	// group.Post("/predict", h.PredictFood)
+	group.Post("/predict", h.PredictFood)
 	// group.Post("/add", h.AddFood)
 	// group.Get("/list", h.GetListTracker)
 
 }
 
-// func (h *TrackerHandler) PredictFood(ctx iris.Context) {
-// 	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
-// 	defer cancel()
+func (h *TrackerHandler) PredictFood(ctx iris.Context) {
+	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	defer cancel()
 
-// 	file, fileHeader, err := ctx.FormFile("food_image")
-// 	if err != nil {
-// 		ctx.StopWithJSON(iris.StatusBadRequest, err)
-// 		return
-// 	}
+	id := ctx.Values().Get("id").(string)
 
-// 	defer file.Close()
+	file, fileHeader, err := ctx.FormFile("food_image")
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusBadRequest, err)
+		return
+	}
 
-// 	result, err := h.trackerUsecase.PredictFood(c, file, fileHeader)
-// 	if err != nil {
-// 		ctx.StopWithJSON(iris.StatusInternalServerError, err)
-// 		return
-// 	}
+	defer file.Close()
 
-// 	ctx.StopWithJSON(iris.StatusOK, iris.Map{
-// 		"message": "Food has been predicted",
-// 		"result":  result,
-// 	})
-// }
+	result, err := h.trackerUsecase.PredictFood(c, fileHeader, file, id)
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.StopWithJSON(iris.StatusOK, iris.Map{
+		"message": "Food has been predicted",
+		"result":  result,
+	})
+}
 
 // func (h *TrackerHandler) AddFood(ctx iris.Context) {
 // 	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)

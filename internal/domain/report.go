@@ -9,4 +9,6 @@ type Report struct {
 	EndDate   time.Time     `json:"endDate" gorm:"type:timestamp;not null"`
 	Trackers  []Tracker     `json:"trackers" gorm:"foreignKey:ReportID;references:ID"`
 	Missions  []UserMission `json:"missions" gorm:"foreignKey:ReportID;references:ID"`
+	CreatedAt time.Time     `json:"createdAt" gorm:"type:timestamp;not null;autoCreateTime"`
+	UpdatedAt time.Time     `json:"updatedAt" gorm:"type:timestamp;not null;autoUpdateTime"`
 }

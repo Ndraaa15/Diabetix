@@ -14,12 +14,12 @@ func Migrate(env *env.Env, action string) {
 	case "up":
 		if err := db.AutoMigrate(
 			&domain.User{},
+			&domain.Report{},
 			&domain.Article{},
 			&domain.BMI{},
 			&domain.Tracker{},
 			&domain.TrackerDetail{},
 			&domain.Mission{},
-			&domain.Report{},
 			&domain.Doctor{},
 			&domain.Consultation{},
 			&domain.DoctorSchedule{},
@@ -30,12 +30,12 @@ func Migrate(env *env.Env, action string) {
 	case "down":
 		if err := db.Migrator().DropTable(
 			&domain.User{},
+			&domain.Report{},
 			&domain.Article{},
 			&domain.BMI{},
 			&domain.Tracker{},
 			&domain.TrackerDetail{},
 			&domain.Mission{},
-			&domain.Report{},
 			&domain.Doctor{},
 			&domain.Consultation{},
 			&domain.DoctorSchedule{},
