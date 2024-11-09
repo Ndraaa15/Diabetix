@@ -10,8 +10,8 @@ type User struct {
 	Name      string       `json:"name" gorm:"type:varchar(255);not null"`
 	Email     string       `json:"email" gorm:"type:varchar(255);not null;unique"`
 	Birth     time.Time    `json:"birth" gorm:"type:date;not null"`
-	IsActive  bool         `json:"is_active" gorm:"type:boolean;not null;default:false"`
+	IsActive  bool         `json:"isActive" gorm:"type:boolean;not null;default:false"`
 	Password  string       `json:"password" gorm:"type:varchar(255);not null"`
-	CreatedAt sql.NullTime `json:"created_at" gorm:"type:timestamp;not null;autoCreateTime"`
-	UpdatedAt sql.NullTime `json:"updated_at" gorm:"type:timestamp;not null;autoUpdateTime"`
+	CreatedAt sql.NullTime `json:"createdAt" gorm:"type:timestamp;not null;autoCreateTime"`
+	UpdatedAt sql.NullTime `json:"updatedAt" gorm:"type:timestamp;not null;autoUpdateTime"`
 }

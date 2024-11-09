@@ -34,7 +34,12 @@ func (h *TrackerHandler) PredictFood(ctx iris.Context) {
 	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
 	defer cancel()
 
-	id := ctx.Values().Get("id").(string)
+	id, ok := ctx.Values().Get("id").(string)
+	if !ok {
+		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+			"message": "User ID context not found",
+		})
+	}
 
 	file, fileHeader, err := ctx.FormFile("food_image")
 	if err != nil {

@@ -1,0 +1,30 @@
+package seed
+
+import (
+	"time"
+
+	"github.com/Ndraaa15/diabetix-server/internal/domain"
+	"gorm.io/gorm"
+)
+
+func PersonalizationSeeder() Seeder {
+	return func(db *gorm.DB) error {
+		personalization := []domain.Personalization{
+			{
+				UserID:         "1854723870678847488",
+				Gender:         "Male",
+				Age:            18,
+				FrequenceSport: "3 times a week",
+				MaxGlucose:     50.0,
+				CreatedAt:      time.Now(),
+				UpdatedAt:      time.Now(),
+			},
+		}
+
+		if err := db.Model(&domain.Personalization{}).CreateInBatches(&personalization, len(personalization)).Error; err != nil {
+			return err
+		}
+
+		return nil
+	}
+}

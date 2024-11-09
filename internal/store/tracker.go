@@ -10,6 +10,7 @@ import (
 
 type ITrackerStore interface {
 	GetCurrentTracker(ctx context.Context, userID string, date time.Time) (domain.Tracker, error)
+	GetPersonalization(ctx context.Context, userID string) (domain.Personalization, error)
 }
 
 type TrackerStore struct {
@@ -31,4 +32,15 @@ func (r *TrackerStore) GetCurrentTracker(ctx context.Context, userID string, dat
 	}
 
 	return tracker, nil
+}
+
+func (r *TrackerStore) GetPersonalization(ctx context.Context, userID string) (domain.Personalization, error) {
+	var personalization domain.Personalization
+
+	err := r.db.Where("user_id = ?", userID).First(&personalization).Error
+	if err != nil {
+		return domain.Personalization{}, err
+	}
+
+	return personalization, nil
 }

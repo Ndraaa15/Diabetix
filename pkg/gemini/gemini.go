@@ -19,7 +19,7 @@ type PredictFoodResponseWithGenai struct {
 	Glucose      float64 `json:"glucose"`
 	Calories     float64 `json:"calories"`
 	Fat          float64 `json:"fat"`
-	Carbohidrate float64 `json:"carbohidrate"`
+	Carbohydrate float64 `json:"carbohidrate"`
 	Protein      float64 `json:"protein"`
 	Advice       string  `json:"advice"`
 }
@@ -44,13 +44,11 @@ func NewGemini(env *env.Env) *Gemini {
 }
 
 func (g *Gemini) GenerateNutritionFood(ctx context.Context, picture []byte, previousFoods []domain.TrackerDetail) (PredictFoodResponseWithGenai, error) {
-	// Ubah data makanan sebelumnya menjadi JSON untuk dikirim ke dalam prompt
 	previousFoodsJSON, err := json.Marshal(previousFoods)
 	if err != nil {
 		return PredictFoodResponseWithGenai{}, err
 	}
 
-	// Buat prompt lengkap untuk analisis nutrisi dan saran
 	prompt := fmt.Sprintf(`
 Analyze the food item in the provided image to predict its nutritional information, including its name, glucose level, calories, fat, carbohydrate, and protein content. 
 Additionally, provide advice based on the user's food consumption history for today, which is provided as an array of JSON objects.
@@ -76,6 +74,7 @@ The advice should address balancing glucose, calorie, fat, carbohydrate, and pro
 	genaiParts := []genai.Part{
 		genai.Text(prompt),
 		genai.ImageData("jpg", picture),
+		genai.Text("Please provide using Indonesia Language"),
 	}
 
 	content, err := g.model.GenerateContent(ctx, genaiParts...)

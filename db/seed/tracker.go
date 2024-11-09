@@ -12,6 +12,7 @@ func TrackerSeeder() Seeder {
 		trackers := []domain.Tracker{
 			{
 				ID:           1,
+				UserID:       "1854723870678847488",
 				TotalGlucose: 110.5,
 				Status:       "Normal",
 				CreatedAt:    time.Now().Format(time.RFC3339),
@@ -20,6 +21,7 @@ func TrackerSeeder() Seeder {
 			},
 			{
 				ID:           2,
+				UserID:       "1854723870678847488",
 				TotalGlucose: 90.3,
 				Status:       "Low",
 				CreatedAt:    time.Now().Format(time.RFC3339),
@@ -28,6 +30,7 @@ func TrackerSeeder() Seeder {
 			},
 			{
 				ID:           3,
+				UserID:       "1854723870678847488",
 				TotalGlucose: 135.2,
 				Status:       "High",
 				CreatedAt:    time.Now().Format(time.RFC3339),
@@ -36,6 +39,7 @@ func TrackerSeeder() Seeder {
 			},
 			{
 				ID:           4,
+				UserID:       "1854723870678847488",
 				TotalGlucose: 78.9,
 				Status:       "Low",
 				CreatedAt:    time.Now().Format(time.RFC3339),
@@ -44,6 +48,7 @@ func TrackerSeeder() Seeder {
 			},
 			{
 				ID:           5,
+				UserID:       "1854723870678847488",
 				TotalGlucose: 120.0,
 				Status:       "Normal",
 				CreatedAt:    time.Now().Format(time.RFC3339),

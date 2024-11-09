@@ -65,4 +65,5 @@ func RegisterSeeder() {
 	seeders["report"] = ReportSeeder()
 	seeders["tracker"] = TrackerSeeder()
 	seeders["tracker_detail"] = TrackerDetailSeeder()
+	seeders["personalization"] = PersonalizationSeeder()
 }

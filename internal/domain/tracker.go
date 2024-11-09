@@ -2,6 +2,7 @@ package domain
 
 type Tracker struct {
 	ID             uint64          `json:"id" gorm:"primaryKey;autoIncrement"`
+	UserID         string          `json:"userID" gorm:"type:varchar(255);not null"`
 	TotalGlucose   float64         `json:"totalGlucose" gorm:"type:numeric;not null"`
 	Status         string          `json:"status" gorm:"type:varchar(255);not null"`
 	CreatedAt      string          `json:"createdAt" gorm:"type:timestamp;not null;autoCreateTime"`
