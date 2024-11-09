@@ -30,7 +30,26 @@ func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.Create
 		FrequenceSport: req.FrequenceSport,
 	}
 
-	if err := uc.userStore.CreatePersonalization(ctx, data); err != nil {
+	bmiFactor := req.Weight / ((req.Height / 100) * (req.Height / 100))
+	var bmiStatus string
+	switch {
+	case bmiFactor < 18.5:
+		bmiStatus = "Low"
+	case bmiFactor >= 18.5 && bmiFactor < 24.9:
+		bmiStatus = "Normal"
+	case bmiFactor >= 25:
+		bmiStatus = "High"
+	}
+
+	bmi := domain.BMI{
+		UserID: req.UserID,
+		Height: req.Height,
+		Weight: req.Weight,
+		BMI:    bmiFactor,
+		Status: bmiStatus,
+	}
+
+	if err := uc.userStore.CreatePersonalizationAndBMI(ctx, data, bmi); err != nil {
 		return err
 	}
 

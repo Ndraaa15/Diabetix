@@ -15,7 +15,7 @@ type Cloudinary struct {
 	folder     string
 }
 
-func NewCloudinary(env env.Env) *Cloudinary {
+func NewCloudinary(env *env.Env) *Cloudinary {
 	cld, err := cloudinary.NewFromParams(env.CloudinaryName, env.CloudinaryApiKey, env.CloudinaryApiSecret)
 	if err != nil {
 		zap.S().Fatal(err)

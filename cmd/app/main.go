@@ -10,6 +10,7 @@ import (
 	"github.com/Ndraaa15/diabetix-server/internal/handler"
 	"github.com/Ndraaa15/diabetix-server/internal/store"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
+	"github.com/Ndraaa15/diabetix-server/pkg/cloudinary"
 	"github.com/Ndraaa15/diabetix-server/pkg/config"
 	"github.com/Ndraaa15/diabetix-server/pkg/env"
 	"github.com/Ndraaa15/diabetix-server/pkg/gemini"
@@ -35,6 +36,7 @@ func main() {
 	mustProvide(gomail.NewGomail)
 	mustProvide(env.New)
 	mustProvide(gemini.NewGemini)
+	mustProvide(cloudinary.NewCloudinary)
 
 	mustProvide(store.NewAuthStore)
 	mustProvide(usecase.NewAuthUsecase)
@@ -45,6 +47,9 @@ func main() {
 	mustProvide(store.NewUserStore)
 	mustProvide(usecase.NewUserUsecase)
 
+	mustProvide(usecase.NewFileUploadUsecase)
+
+	mustProvide(handler.NewFileUploadHandler, dig.Group("handlers"))
 	mustProvide(handler.NewAuthHandler, dig.Group("handlers"))
 	mustProvide(handler.NewTrackerHandler, dig.Group("handlers"))
 	mustProvide(handler.NewUserHandler, dig.Group("handlers"))

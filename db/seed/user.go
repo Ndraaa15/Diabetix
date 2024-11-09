@@ -25,6 +25,7 @@ func UserSeeder() Seeder {
 				ID:       "1854723870678847488",
 				Name:     "Gede Indra Adi Brata",
 				Email:    "indrabrata599@gmail.com",
+				LevelID:  1,
 				Password: hashedPassword,
 				Birth:    birth,
 				IsActive: true,
@@ -32,6 +33,7 @@ func UserSeeder() Seeder {
 			{
 				ID:       "1854724598575140864",
 				Name:     "Paula Sugiarto",
+				LevelID:  1,
 				Email:    "paulaaaa@gmail.com",
 				Password: hashedPassword,
 				Birth:    birth,
@@ -41,6 +43,7 @@ func UserSeeder() Seeder {
 				ID:       "1854763141305470976",
 				Name:     "Handedius Sando Sianipar",
 				Email:    "sandogi@gmail.com",
+				LevelID:  1,
 				Password: hashedPassword,
 				Birth:    birth,
 				IsActive: true,

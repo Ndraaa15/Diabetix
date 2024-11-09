@@ -27,7 +27,6 @@ func (h *TrackerHandler) InitRoutes(app router.Party) {
 	group.Post("/predict", h.PredictFood)
 	// group.Post("/add", h.AddFood)
 	// group.Get("/list", h.GetListTracker)
-
 }
 
 func (h *TrackerHandler) PredictFood(ctx iris.Context) {
