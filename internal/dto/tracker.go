@@ -1,6 +1,6 @@
 package dto
 
-type AddFoodRequest struct {
+type CreateTrackerDetailRequest struct {
 	FoodName     string  `json:"foodName"`
 	FoodImage    string  `json:"foodImage"`
 	Glucose      float64 `json:"glucose"`

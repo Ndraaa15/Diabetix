@@ -53,6 +53,14 @@ func (uc *TrackerUsecase) PredictFood(ctx context.Context, fileHeader *multipart
 	if err != nil {
 		return dto.PredictFoodResponse{}, err
 	}
+	var levelGlucose string
+	if resultGenerate.Glucose < personalization.MaxGlucose*0.7 {
+		levelGlucose = "Low"
+	} else if resultGenerate.Glucose < personalization.MaxGlucose {
+		levelGlucose = "Normal"
+	} else {
+		levelGlucose = "High"
+	}
 
 	response := dto.PredictFoodResponse{
 		FoodName:       resultGenerate.FoodName,
@@ -64,8 +72,49 @@ func (uc *TrackerUsecase) PredictFood(ctx context.Context, fileHeader *multipart
 		Advice:         resultGenerate.Advice,
 		MaxGlucose:     personalization.MaxGlucose,
 		CurrentGlucose: tracker.TotalGlucose,
-		LevelGlucose:   "Normal",
+		LevelGlucose:   levelGlucose,
 	}
 
 	return response, nil
 }
+
+// func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDetailRequest, userID string) error {
+// 	tracker, err := uc.trackerStore.GetCurrentTracker(ctx, userID, time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local))
+// 	if !errors.Is(err, gorm.ErrRecordNotFound) {
+// 		return err
+// 	}
+
+// 	report, err := uc.trackerStore.GetCurrentReport(ctx, userID, time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local))
+
+// 	if !errors.Is(err, gorm.ErrRecordNotFound) {
+// 		return err
+// 	}
+
+// 	report, err := uc.trackerStore.CreateReport(ctx, domain.Report{
+// 		UserID:    userID,
+// 		StartDate: time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local),
+// 		EndDate:   time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 23, 59, 59, 0, time.Local),
+// 	})
+
+// 	tracker = domain.Tracker{
+// 		TotalGlucose: req.Glucose,
+// 		Status:       "Low",
+// 		UserID:       userID,
+// 	}
+
+// 	data := domain.TrackerDetail{
+// 		FoodName:     req.FoodName,
+// 		FoodImage:    req.FoodImage,
+// 		Glucose:      req.Glucose,
+// 		Calory:       req.Calory,
+// 		Fat:          req.Fat,
+// 		Protein:      req.Protein,
+// 		Carbohydrate: req.Carbohydrate,
+// 	}
+
+// 	if err := uc.trackerStore.CreateTrackerDetail(ctx, data); err != nil {
+// 		return err
+// 	}
+
+// 	return nil
+// }

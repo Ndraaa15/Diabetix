@@ -11,6 +11,8 @@ import (
 type ITrackerStore interface {
 	GetCurrentTracker(ctx context.Context, userID string, date time.Time) (domain.Tracker, error)
 	GetPersonalization(ctx context.Context, userID string) (domain.Personalization, error)
+	CreateTrackerDetail(ctx context.Context, trackerDetail domain.TrackerDetail) error
+	CreateTracker(ctx context.Context, tracker domain.Tracker) (domain.Tracker, error)
 }
 
 type TrackerStore struct {
@@ -34,6 +36,26 @@ func (r *TrackerStore) GetCurrentTracker(ctx context.Context, userID string, dat
 	return tracker, nil
 }
 
+func (r *TrackerStore) GetCurrentReport(ctx context.Context, userID string, date time.Time) (domain.Report, error) {
+	var report domain.Report
+
+	err := r.db.Where("user_id = ?", userID).First(&report).Error
+	if err != nil {
+		return domain.Report{}, err
+	}
+
+	return report, nil
+}
+func (r *TrackerStore) GetReportBetweenDates(ctx context.Context, userID string, startDate, endDate time.Time) ([]domain.Report, error) {
+	var reports []domain.Report
+
+	err := r.db.Where("user_id = ? AND DATE(created_at) BETWEEN ? AND ?", userID, startDate.Format("2006-01-02"), endDate.Format("2006-01-02")).Find(&reports).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return reports, nil
+}
 func (r *TrackerStore) GetPersonalization(ctx context.Context, userID string) (domain.Personalization, error) {
 	var personalization domain.Personalization
 
@@ -43,4 +65,31 @@ func (r *TrackerStore) GetPersonalization(ctx context.Context, userID string) (d
 	}
 
 	return personalization, nil
+}
+
+func (r *TrackerStore) CreateTracker(ctx context.Context, tracker domain.Tracker) (domain.Tracker, error) {
+	err := r.db.Model(&domain.Tracker{}).Create(&tracker).Error
+	if err != nil {
+		return domain.Tracker{}, err
+	}
+
+	return tracker, nil
+}
+
+func (r *TrackerStore) UpdateTracker(ctx context.Context, tracker domain.Tracker) error {
+	err := r.db.Where("id = ?", tracker.ID).Updates(&tracker).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *TrackerStore) CreateTrackerDetail(ctx context.Context, trackerDetail domain.TrackerDetail) error {
+	err := r.db.Model(&domain.TrackerDetail{}).Create(&trackerDetail).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
