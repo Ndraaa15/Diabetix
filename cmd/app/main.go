@@ -44,11 +44,19 @@ func main() {
 	mustProvide(store.NewTrackerStore)
 	mustProvide(usecase.NewTrackerUsecase)
 
+	mustProvide(store.NewArticleStore)
+	mustProvide(usecase.NewArticleUsecase)
+
+	mustProvide(store.NewBMIStore)
+	mustProvide(usecase.NewBMIUsecase)
+
 	mustProvide(store.NewUserStore)
 	mustProvide(usecase.NewUserUsecase)
 
 	mustProvide(usecase.NewFileUploadUsecase)
 
+	mustProvide(handler.NewBMIHandler, dig.Group("handlers"))
+	mustProvide(handler.NewArticleHandler, dig.Group("handlers"))
 	mustProvide(handler.NewFileUploadHandler, dig.Group("handlers"))
 	mustProvide(handler.NewAuthHandler, dig.Group("handlers"))
 	mustProvide(handler.NewTrackerHandler, dig.Group("handlers"))

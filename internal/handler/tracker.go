@@ -40,7 +40,7 @@ func (h *TrackerHandler) PredictFood(ctx iris.Context) {
 		})
 	}
 
-	file, fileHeader, err := ctx.FormFile("food_image")
+	file, fileHeader, err := ctx.FormFile("foodImage")
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusBadRequest, err)
 		return

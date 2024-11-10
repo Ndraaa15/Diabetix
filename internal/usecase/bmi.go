@@ -1,21 +1,76 @@
 package usecase
 
 import (
+	"context"
+
+	"github.com/Ndraaa15/diabetix-server/internal/domain"
+	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/store"
-	"github.com/Ndraaa15/diabetix-server/pkg/gemini"
 )
 
 type IBMIUsecase interface {
+	GetCurrentBMI(ctx context.Context, userID string) (dto.BMIResponse, error)
+	CreateBMI(ctx context.Context, req dto.CreateBMIRequest, userID string) (domain.BMI, error)
 }
 
 type BMIUsecase struct {
 	bmiStore store.IBMIStore
-	gemini   *gemini.Gemini
 }
 
-func NewBMIUsecase(bmiStore store.IBMIStore, gemini *gemini.Gemini) IBMIUsecase {
+func NewBMIUsecase(bmiStore store.IBMIStore) IBMIUsecase {
 	return &BMIUsecase{
 		bmiStore: bmiStore,
-		gemini:   gemini,
 	}
+}
+
+func (uc *BMIUsecase) GetCurrentBMI(ctx context.Context, userID string) (dto.BMIResponse, error) {
+	currentBmi, err := uc.bmiStore.GetCurrentBMI(ctx, userID)
+	if err != nil {
+		return dto.BMIResponse{}, err
+	}
+
+	weekPreviousBmi, err := uc.bmiStore.GetWeekPreviousBMI(ctx, userID)
+	if err != nil {
+		return dto.BMIResponse{}, err
+	}
+
+	allBmi, err := uc.bmiStore.GetAllBMI(ctx, userID)
+	if err != nil {
+		return dto.BMIResponse{}, err
+	}
+
+	return dto.BMIResponse{
+		CurrentBMI:      currentBmi,
+		WeekPreviousBMI: weekPreviousBmi,
+		AllBMI:          allBmi,
+	}, nil
+}
+
+func (uc *BMIUsecase) CreateBMI(ctx context.Context, req dto.CreateBMIRequest, userID string) (domain.BMI, error) {
+	data := domain.BMI{
+		UserID: userID,
+		Weight: req.Weight,
+		Height: req.Height,
+	}
+
+	bmiFactor := req.Weight / ((req.Height / 100) * (req.Height / 100))
+	var bmiStatus string
+	switch {
+	case bmiFactor < 18.5:
+		bmiStatus = "Underweight"
+	case bmiFactor >= 18.5 && bmiFactor < 24.9:
+		bmiStatus = "Normal"
+	case bmiFactor >= 25:
+		bmiStatus = "Overweight"
+	}
+
+	data.BMI = bmiFactor
+	data.Status = bmiStatus
+
+	bmi, err := uc.bmiStore.CreateBMI(ctx, data)
+	if err != nil {
+		return domain.BMI{}, err
+	}
+
+	return bmi, nil
 }

@@ -61,10 +61,11 @@ func Execute(env *env.Env, name string) {
 func RegisterSeeder() {
 	seeders["level"] = LevelSeeder()
 	seeders["user"] = UserSeeder()
+	seeders["report"] = ReportSeeder()
 	seeders["article"] = ArticleSeeder()
 	seeders["mission"] = MissionSeeder()
-	seeders["report"] = ReportSeeder()
 	seeders["tracker"] = TrackerSeeder()
 	seeders["tracker_detail"] = TrackerDetailSeeder()
 	seeders["personalization"] = PersonalizationSeeder()
+	seeders["bmi"] = BMISeeder()
 }

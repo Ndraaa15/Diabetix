@@ -34,11 +34,11 @@ func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.Create
 	var bmiStatus string
 	switch {
 	case bmiFactor < 18.5:
-		bmiStatus = "Low"
+		bmiStatus = "Underweight"
 	case bmiFactor >= 18.5 && bmiFactor < 24.9:
 		bmiStatus = "Normal"
 	case bmiFactor >= 25:
-		bmiStatus = "High"
+		bmiStatus = "Overweight"
 	}
 
 	bmi := domain.BMI{
