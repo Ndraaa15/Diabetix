@@ -1,8 +1,6 @@
 package seed
 
 import (
-	"time"
-
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
 	"gorm.io/gorm"
 )
@@ -16,8 +14,6 @@ func PersonalizationSeeder() Seeder {
 				Age:            18,
 				FrequenceSport: "3 times a week",
 				MaxGlucose:     50.0,
-				CreatedAt:      time.Now(),
-				UpdatedAt:      time.Now(),
 			},
 		}
 

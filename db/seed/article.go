@@ -12,6 +12,7 @@ func ArticleSeeder() Seeder {
 		articles := []domain.Article{
 			{
 				ID:       1,
+				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/img_25012022164307377212495.jpg",
 				Title:    "Manfaat Pola Makan Seimbang",
 				Category: "Food",
 				Body: `
@@ -23,13 +24,12 @@ func ArticleSeeder() Seeder {
 	
 	Menerapkan pola makan seimbang bukan hanya tentang menghindari makanan cepat saji, tetapi juga memilih bahan makanan segar yang diolah dengan cara yang sehat. Dengan demikian, kita dapat mencapai keseimbangan nutrisi yang dibutuhkan oleh tubuh setiap harinya.
 				`,
-				Likes:     150,
-				Date:      time.Now(),
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				Likes: 150,
+				Date:  time.Now().AddDate(0, 0, -1),
 			},
 			{
 				ID:       2,
+				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/bagus-untuk-kesehatan-simak-5-manfaat-olahraga-bagi-tubuh-ini-pantang-diabaikan-1653392364.jpg",
 				Title:    "Olahraga Terbaik untuk Membangun Kekuatan",
 				Category: "Sport",
 				Body: `
@@ -41,13 +41,12 @@ func ArticleSeeder() Seeder {
 	
 	Olahraga kekuatan perlu dilakukan secara bertahap dan konsisten. Dengan menggabungkan latihan kekuatan ini ke dalam rutinitas harian, kita dapat mencapai tubuh yang lebih kuat dan lebih sehat.
 				`,
-				Likes:     102,
-				Date:      time.Now(),
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				Likes: 102,
+				Date:  time.Now().AddDate(0, 0, -2),
 			},
 			{
 				ID:       3,
+				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/mixed-berry-breakfast-smoothie-7959466-1x1-e0ad2304222e49508cda7b73b21de921.jpg",
 				Title:    "Resep Smoothie Sehat dan Lezat",
 				Category: "Food",
 				Body: `
@@ -61,10 +60,8 @@ func ArticleSeeder() Seeder {
 	
 	Cara membuatnya mudah, cukup campurkan bahan-bahan segar dalam blender, lalu sajikan. Smoothie ini tidak hanya lezat tetapi juga dapat membantu menjaga kesehatan tubuh.
 				`,
-				Likes:     90,
-				Date:      time.Now(),
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				Likes: 90,
+				Date:  time.Now().AddDate(0, 0, -3),
 			},
 		}
 

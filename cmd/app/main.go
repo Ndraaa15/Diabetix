@@ -47,6 +47,9 @@ func main() {
 	mustProvide(store.NewArticleStore)
 	mustProvide(usecase.NewArticleUsecase)
 
+	mustProvide(store.NewMissionStore)
+	mustProvide(usecase.NewMissionUsecase)
+
 	mustProvide(store.NewBMIStore)
 	mustProvide(usecase.NewBMIUsecase)
 
@@ -55,6 +58,7 @@ func main() {
 
 	mustProvide(usecase.NewFileUploadUsecase)
 
+	mustProvide(handler.NewMissionHandler, dig.Group("handlers"))
 	mustProvide(handler.NewBMIHandler, dig.Group("handlers"))
 	mustProvide(handler.NewArticleHandler, dig.Group("handlers"))
 	mustProvide(handler.NewFileUploadHandler, dig.Group("handlers"))

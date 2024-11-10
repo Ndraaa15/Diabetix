@@ -14,7 +14,7 @@ func ReportSeeder() Seeder {
 			return err
 		}
 
-		endDate, err := time.Parse("02-01-2006", "04-11-2024")
+		endDate, err := time.Parse("02-01-2006", "11-11-2024")
 		if err != nil {
 			return err
 		}
@@ -25,8 +25,6 @@ func ReportSeeder() Seeder {
 				UserID:    "1854723870678847488",
 				StartDate: startDate,
 				EndDate:   endDate,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
 			},
 		}
 

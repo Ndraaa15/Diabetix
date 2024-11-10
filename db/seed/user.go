@@ -30,24 +30,6 @@ func UserSeeder() Seeder {
 				Birth:    birth,
 				IsActive: true,
 			},
-			{
-				ID:       "1854724598575140864",
-				Name:     "Paula Sugiarto",
-				LevelID:  1,
-				Email:    "paulaaaa@gmail.com",
-				Password: hashedPassword,
-				Birth:    birth,
-				IsActive: true,
-			},
-			{
-				ID:       "1854763141305470976",
-				Name:     "Handedius Sando Sianipar",
-				Email:    "sandogi@gmail.com",
-				LevelID:  1,
-				Password: hashedPassword,
-				Birth:    birth,
-				IsActive: true,
-			},
 		}
 
 		if err := db.Model(&domain.User{}).CreateInBatches(&users, len(users)).Error; err != nil {

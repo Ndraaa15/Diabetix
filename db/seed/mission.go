@@ -1,8 +1,6 @@
 package seed
 
 import (
-	"time"
-
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
 	"gorm.io/gorm"
 )
@@ -12,7 +10,7 @@ func MissionSeeder() Seeder {
 		missions := []domain.Mission{
 			{
 				ID:     1,
-				Image:  "https://example.com/images/yoga.png",
+				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/Laia_Bove_Mermaid-pose.jpg",
 				Exp:    150,
 				Calory: 200,
 				Title:  "Yoga Pagi untuk Keseimbangan Tubuh",
@@ -26,14 +24,13 @@ func MissionSeeder() Seeder {
 	- **Mengurangi stres dan meningkatkan fokus.**
 	- **Meningkatkan kesehatan mental dan fisik.**
 				`,
-				Category:  "Hard",
-				Duration:  30,
-				CreatedAt: time.Now(),
-				UpdateAt:  time.Now(),
+				Category:   "Hard",
+				Duration:   30,
+				Difficulty: "Medium",
 			},
 			{
 				ID:     2,
-				Image:  "https://example.com/images/smoothie.png",
+				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/anti-inflammatory-smoothie-recipe-2000-824af0bcaabd4966947eca2d87760c18.jpg?t=2024-11-09T18%3A44%3A03.806Z",
 				Exp:    100,
 				Calory: 120,
 				Title:  "Membuat Smoothie Sehat",
@@ -48,14 +45,13 @@ func MissionSeeder() Seeder {
 	- **Memberi energi yang tahan lama.**
 	
 	`,
-				Category:  "Easy",
-				Duration:  10,
-				CreatedAt: time.Now(),
-				UpdateAt:  time.Now(),
+				Category:   "Food",
+				Duration:   10,
+				Difficulty: "Easy",
 			},
 			{
 				ID:     3,
-				Image:  "https://example.com/images/meditasi.png",
+				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/Bantu-Usir-Stres-Ini-X-Cara-Meditasi-yang-Benar-01.jpg",
 				Exp:    200,
 				Calory: 50,
 				Title:  "Meditasi untuk Relaksasi",
@@ -68,16 +64,14 @@ func MissionSeeder() Seeder {
 	- **Mengurangi stres dan kecemasan.**
 	- **Meningkatkan fokus dan konsentrasi.**
 	- **Membantu meningkatkan kualitas tidur.**
-
 	`,
-				Category:  "Medium",
-				Duration:  15,
-				CreatedAt: time.Now(),
-				UpdateAt:  time.Now(),
+				Category:   "Mental",
+				Duration:   15,
+				Difficulty: "Easy",
 			},
 			{
 				ID:     4,
-				Image:  "https://example.com/images/jogging.png",
+				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/Catat-Ini-Waktu-Terbaik-untuk-Olahraga-Jogging.jpg",
 				Exp:    250,
 				Calory: 300,
 				Title:  "Jogging Pagi di Taman",
@@ -91,14 +85,13 @@ func MissionSeeder() Seeder {
 	- **Membantu menurunkan berat badan.**
 	- **Memberikan energi positif untuk hari yang lebih baik.**
 				`,
-				Category:  "Hard",
-				Duration:  30,
-				CreatedAt: time.Now(),
-				UpdateAt:  time.Now(),
+				Category:   "Olahraga",
+				Duration:   30,
+				Difficulty: "Hard",
 			},
 			{
 				ID:     5,
-				Image:  "https://example.com/images/buku.png",
+				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/manfaat-membaca-buku-bagi-kesehatan-mental-halodoc.jpg",
 				Exp:    120,
 				Calory: 50,
 				Title:  "Membaca Buku Inspiratif",
@@ -113,10 +106,9 @@ func MissionSeeder() Seeder {
 	- **Memotivasi diri untuk mencapai tujuan.**
 	- **Meningkatkan konsentrasi dan fokus.**	
 	`,
-				Category:  "Medium",
-				Duration:  20,
-				CreatedAt: time.Now(),
-				UpdateAt:  time.Now(),
+				Category:   "Mental",
+				Duration:   20,
+				Difficulty: "Easy",
 			},
 		}
 
