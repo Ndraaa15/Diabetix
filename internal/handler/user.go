@@ -27,12 +27,14 @@ func NewUserHandler(userUsecase usecase.IUserUsecase) bootstrap.Handler {
 func (h *UserHandler) InitRoutes(app router.Party) {
 	group := app.Party("/users")
 	group.Use(middleware.Authentication())
-	group.Post("/personalization", h.CreatePersonalizaation)
 	group.Get("/profile", h.GetProfile)
 	group.Get("/homepage", h.GetHomepage)
+
+	groupPublic := app.Party("/users")
+	groupPublic.Post("/personalization", h.CreatePersonalization)
 }
 
-func (h *UserHandler) CreatePersonalizaation(ctx iris.Context) {
+func (h *UserHandler) CreatePersonalization(ctx iris.Context) {
 	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
 	defer cancel()
 
