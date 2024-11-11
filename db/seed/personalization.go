@@ -12,7 +12,7 @@ func PersonalizationSeeder() Seeder {
 				UserID:         "1854723870678847488",
 				Gender:         "Male",
 				Age:            18,
-				FrequenceSport: "3 times a week",
+				FrequenceSport: 2,
 				MaxGlucose:     50.0,
 			},
 		}

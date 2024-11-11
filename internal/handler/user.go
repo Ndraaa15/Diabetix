@@ -6,6 +6,7 @@ import (
 
 	"github.com/Ndraaa15/diabetix-server/cmd/bootstrap"
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
+	"github.com/Ndraaa15/diabetix-server/internal/middleware"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
 	"github.com/Ndraaa15/diabetix-server/pkg/util"
 	"github.com/go-playground/validator/v10"
@@ -24,8 +25,11 @@ func NewUserHandler(userUsecase usecase.IUserUsecase) bootstrap.Handler {
 }
 
 func (h *UserHandler) InitRoutes(app router.Party) {
-	group := app.Party("/user")
+	group := app.Party("/users")
+	group.Use(middleware.Authentication())
 	group.Post("/personalization", h.CreatePersonalizaation)
+	group.Get("/profile", h.GetProfile)
+	group.Get("/homepage}", h.GetHomepage)
 }
 
 func (h *UserHandler) CreatePersonalizaation(ctx iris.Context) {
@@ -52,5 +56,51 @@ func (h *UserHandler) CreatePersonalizaation(ctx iris.Context) {
 	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
 		"message": "User has been filled personalization",
 		"id":      req.UserID,
+	})
+}
+
+func (h *UserHandler) GetProfile(ctx iris.Context) {
+	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	defer cancel()
+
+	id, ok := ctx.Values().Get("id").(string)
+	if !ok {
+		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+			"message": "User ID context not found",
+		})
+	}
+
+	profiles, err := h.userUsecase.GetProfile(c, id)
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
+		"message":  "Profiles has been fetched",
+		"profiles": profiles,
+	})
+}
+
+func (h *UserHandler) GetHomepage(ctx iris.Context) {
+	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	defer cancel()
+
+	id, ok := ctx.Values().Get("id").(string)
+	if !ok {
+		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+			"message": "User ID context not found",
+		})
+	}
+
+	homePageData, err := h.userUsecase.GetDataForHomePage(c, id)
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.StopWithJSON(iris.StatusOK, iris.Map{
+		"message": "Homepage has been fetched",
+		"data":    homePageData,
 	})
 }

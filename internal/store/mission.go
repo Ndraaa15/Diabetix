@@ -11,6 +11,9 @@ type IMissionStore interface {
 	GetAllMissionUser(ctx context.Context, userID string) ([]domain.UserMission, error)
 	GetUserMission(ctx context.Context, userID string, missionID uint64) (domain.UserMission, error)
 	UpdateUserMission(ctx context.Context, mission domain.UserMission) error
+	GetUserByID(ctx context.Context, userID string) (domain.User, error)
+	WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error
+	UpdateUser(ctx context.Context, user domain.User) error
 }
 
 type MissionStore struct {
@@ -45,6 +48,27 @@ func (r *MissionStore) GetUserMission(ctx context.Context, userID string, missio
 
 func (r *MissionStore) UpdateUserMission(ctx context.Context, mission domain.UserMission) error {
 	if err := r.db.WithContext(ctx).Model(&domain.UserMission{}).Where("user_id = ?", mission.UserID).Where("mission_id = ?", mission.MissionID).Updates(&mission).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *MissionStore) GetUserByID(ctx context.Context, userID string) (domain.User, error) {
+	var user domain.User
+	if err := r.db.WithContext(ctx).Model(&domain.User{}).Preload("Personalization").Preload("Level").Where("id = ?", userID).First(&user).Error; err != nil {
+		return domain.User{}, err
+	}
+
+	return user, nil
+}
+
+func (r *MissionStore) WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error {
+	return r.db.Transaction(fn)
+}
+
+func (r *MissionStore) UpdateUser(ctx context.Context, user domain.User) error {
+	if err := r.db.Model(domain.User{}).Where("id = ?", user.ID).Updates(&user).Error; err != nil {
 		return err
 	}
 

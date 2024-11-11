@@ -24,7 +24,7 @@ func NewAuthHandler(authUsecase usecase.IAuthUsecase) bootstrap.Handler {
 }
 
 func (h *AuthHandler) InitRoutes(app router.Party) {
-	group := app.Party("/auth")
+	group := app.Party("/auths")
 	group.Post("/register", h.Register)
 	group.Post("/verify", h.Verify)
 	group.Post("/login", h.Login)

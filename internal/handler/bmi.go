@@ -25,7 +25,7 @@ func NewBMIHandler(bmiUsecase usecase.IBMIUsecase) bootstrap.Handler {
 }
 
 func (h *BMIHandler) InitRoutes(app router.Party) {
-	group := app.Party("/bmi")
+	group := app.Party("/bmis")
 	group.Use(middleware.Authentication())
 	group.Post("", h.CreateBMI)
 	group.Get("", h.GetBMI)

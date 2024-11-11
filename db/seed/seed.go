@@ -26,7 +26,25 @@ func Execute(env *env.Env, name string) {
 	RegisterSeeder()
 
 	if name == "" {
-		for seederName, seedFunc := range seeders {
+		seederOrder := []string{
+			"level",
+			"user",
+			"report",
+			"article",
+			"mission",
+			"user_mission",
+			"bmi",
+			"tracker",
+			"tracker_detail",
+			"personalization",
+		}
+
+		for _, seederName := range seederOrder {
+			seedFunc, exists := seeders[seederName]
+			if !exists {
+				zap.S().Fatalf("Seeder %s not found", seederName)
+				return
+			}
 			if err := seedFunc(tx); err != nil {
 				tx.Rollback()
 				zap.S().Fatal(err)
@@ -65,8 +83,8 @@ func RegisterSeeder() {
 	seeders["article"] = ArticleSeeder()
 	seeders["mission"] = MissionSeeder()
 	seeders["user_mission"] = UserMissionSeeder()
-	seeders["personalization"] = PersonalizationSeeder()
 	seeders["bmi"] = BMISeeder()
 	seeders["tracker"] = TrackerSeeder()
 	seeders["tracker_detail"] = TrackerDetailSeeder()
+	seeders["personalization"] = PersonalizationSeeder()
 }

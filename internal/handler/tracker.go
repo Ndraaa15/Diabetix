@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Ndraaa15/diabetix-server/cmd/bootstrap"
+	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/middleware"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
 	"github.com/kataras/iris/v12"
@@ -22,11 +23,11 @@ func NewTrackerHandler(trackerUsecase usecase.ITrackerUsecase) bootstrap.Handler
 }
 
 func (h *TrackerHandler) InitRoutes(app router.Party) {
-	group := app.Party("/tracker")
+	group := app.Party("/trackers")
 	group.Use(middleware.Authentication())
 	group.Post("/predict", h.PredictFood)
-	// group.Post("/add", h.AddFood)
-	// group.Get("/list", h.GetListTracker)
+	group.Post("/add", h.AddFood)
+	group.Get("", h.GetAllTracker)
 }
 
 func (h *TrackerHandler) PredictFood(ctx iris.Context) {
@@ -60,44 +61,51 @@ func (h *TrackerHandler) PredictFood(ctx iris.Context) {
 	})
 }
 
-// func (h *TrackerHandler) AddFood(ctx iris.Context) {
-// 	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
-// 	defer cancel()
+func (h *TrackerHandler) AddFood(ctx iris.Context) {
+	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	defer cancel()
 
-// 	var req dto.AddFoodRequest
-// 	if err := ctx.ReadJSON(&req); err != nil {
-// 		ctx.StopWithJSON(iris.StatusBadRequest, err)
-// 		return
-// 	}
+	var req dto.CreateTrackerDetailRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		ctx.StopWithJSON(iris.StatusBadRequest, err)
+		return
+	}
 
-// 	err := h.trackerUsecase.AddFood(c, req)
-// 	if err != nil {
-// 		ctx.StopWithJSON(iris.StatusInternalServerError, err)
-// 		return
-// 	}
+	id, ok := ctx.Values().Get("id").(string)
+	if !ok {
+		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+			"message": "User ID context not found",
+		})
+	}
 
-// 	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
-// 		"message": "Food has been added",
-// 	})
-// }
+	err := h.trackerUsecase.AddFood(c, req, id)
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusInternalServerError, err)
+		return
+	}
 
-// func (h *TrackerHandler) GetListTracker(ctx iris.Context) {
-// 	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
-// 	defer cancel()
+	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
+		"message": "Food has been added",
+	})
+}
 
-// 	userID, ok := ctx.Values().Get("id").(string)
-// 	if !ok {
-// 		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
-// 			"message": "User ID not found",
-// 		})
-// 		return
-// 	}
+func (h *TrackerHandler) GetAllTracker(ctx iris.Context) {
+	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	defer cancel()
 
-// 	listTracker, err := h.trackerUsecase.GetListTracker(c, userID)
-// 	if err != nil {
-// 		ctx.StopWithJSON(iris.StatusInternalServerError, err)
-// 		return
-// 	}
+	userID, ok := ctx.Values().Get("id").(string)
+	if !ok {
+		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+			"message": "User ID not found",
+		})
+		return
+	}
 
-// 	ctx.StopWithJSON(iris.StatusOK, listTracker)
-// }
+	listTracker, err := h.trackerUsecase.GetAllTracker(c, userID)
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.StopWithJSON(iris.StatusOK, listTracker)
+}

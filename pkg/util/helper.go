@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/rand"
 	"math/big"
+	"time"
 
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/pkg/errx"
@@ -27,6 +28,19 @@ func GenerateCode(length int) (string, error) {
 func ParseGetArticlesFilter(ctx iris.Context, filter *dto.GetArticlesFilter) error {
 	if keywordStr := ctx.URLParam("keyword"); keywordStr != "" {
 		filter.Keyword = keywordStr
+	}
+
+	return nil
+}
+
+func ParseGetReportsFilter(ctx iris.Context, filter *dto.GetReportsFilter) error {
+	if dateStr := ctx.URLParam("date"); dateStr != "" {
+		date, err := time.Parse("2006-01-02", dateStr)
+		if err != nil {
+			return errx.New().WithCode(iris.StatusBadRequest).WithMessage("Invalid date format").WithError(err)
+		}
+
+		filter.Date = date
 	}
 
 	return nil

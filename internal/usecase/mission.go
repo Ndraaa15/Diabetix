@@ -6,8 +6,7 @@ import (
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/store"
-	"github.com/Ndraaa15/diabetix-server/pkg/errx"
-	"github.com/kataras/iris/v12"
+	"gorm.io/gorm"
 )
 
 type IMissionUsecase interface {
@@ -35,18 +34,40 @@ func (uc *MissionUsecase) GetAllMissionUser(ctx context.Context, userID string) 
 }
 
 func (uc *MissionUsecase) UpdateUserMission(ctx context.Context, userID string, missionID uint64, req dto.UpdateUserMissionRequest) error {
-	mission, err := uc.missionStore.GetUserMission(ctx, userID, missionID)
+	userMission, err := uc.missionStore.GetUserMission(ctx, userID, missionID)
 	if err != nil {
 		return err
 	}
 
 	if req.Status == "accepted" {
-		mission.IsDone = true
-	} else {
-		return errx.New().WithCode(iris.StatusBadRequest).WithMessage("Status not valid")
+		userMission.IsDone = true
 	}
 
-	if err := uc.missionStore.UpdateUserMission(ctx, mission); err != nil {
+	user, err := uc.missionStore.GetUserByID(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	user.CurrentExp += userMission.Mission.Exp
+
+	if user.CurrentExp >= user.Level.TotalExp {
+		// Todo : make sure the level is the next level (and consist in database)
+		user.LevelID = user.LevelID + 1
+	}
+
+	err = uc.missionStore.WithTransaction(ctx, func(tx *gorm.DB) error {
+		if err := uc.missionStore.UpdateUser(ctx, user); err != nil {
+			return err
+		}
+
+		if err := uc.missionStore.UpdateUserMission(ctx, userMission); err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
 		return err
 	}
 

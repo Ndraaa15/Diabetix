@@ -25,6 +25,7 @@ func ReportSeeder() Seeder {
 				UserID:    "1854723870678847488",
 				StartDate: startDate,
 				EndDate:   endDate,
+				Advice:    "You should eat more vegetables, maintain a balanced diet, exercise regularly, and monitor your blood sugar levels consistently.",
 			},
 		}
 

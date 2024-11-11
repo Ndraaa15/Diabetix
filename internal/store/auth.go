@@ -34,7 +34,7 @@ func (s *AuthStore) CreateUser(ctx context.Context, data domain.User) error {
 
 func (s *AuthStore) GetUserByID(ctx context.Context, id string) (domain.User, error) {
 	var user domain.User
-	if err := s.db.Model(domain.User{}).Where("id = ?", id).First(&user).Error; err != nil {
+	if err := s.db.Model(domain.User{}).Where("id = ?", id).Preload("Personalization").Preload("Level").First(&user).Error; err != nil {
 		return user, err
 	}
 

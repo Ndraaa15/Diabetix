@@ -1,13 +1,13 @@
 package dto
 
 type CreateTrackerDetailRequest struct {
-	FoodName     string  `json:"foodName"`
-	FoodImage    string  `json:"foodImage"`
-	Glucose      float64 `json:"glucose"`
-	Calory       float64 `json:"calory"`
-	Fat          float64 `json:"fat"`
-	Protein      float64 `json:"protein"`
-	Carbohydrate float64 `json:"carbohydrate"`
+	FoodName     string  `json:"foodName" validate:"required"`
+	FoodImage    string  `json:"foodImage" validate:"required"`
+	Glucose      float64 `json:"glucose" validate:"required"`
+	Calory       float64 `json:"calory" validate:"required"`
+	Fat          float64 `json:"fat" validate:"required"`
+	Protein      float64 `json:"protein" validate:"required"`
+	Carbohydrate float64 `json:"carbohydrate" validate:"required"`
 }
 
 type PredictFoodResponse struct {
