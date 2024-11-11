@@ -29,7 +29,7 @@ func (h *UserHandler) InitRoutes(app router.Party) {
 	group.Use(middleware.Authentication())
 	group.Post("/personalization", h.CreatePersonalizaation)
 	group.Get("/profile", h.GetProfile)
-	group.Get("/homepage}", h.GetHomepage)
+	group.Get("/homepage", h.GetHomepage)
 }
 
 func (h *UserHandler) CreatePersonalizaation(ctx iris.Context) {
