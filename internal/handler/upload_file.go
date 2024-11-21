@@ -28,7 +28,7 @@ func (h *FileUploadHandler) InitRoutes(app router.Party) {
 }
 
 func (h *FileUploadHandler) UploadFile(ctx iris.Context) {
-	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	c, cancel := context.WithTimeout(ctx.Clone(), 60*time.Second)
 	defer cancel()
 
 	file, _, err := ctx.FormFile("file")

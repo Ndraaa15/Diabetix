@@ -31,7 +31,7 @@ func (h *TrackerHandler) InitRoutes(app router.Party) {
 }
 
 func (h *TrackerHandler) PredictFood(ctx iris.Context) {
-	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	c, cancel := context.WithTimeout(ctx.Clone(), 60*time.Second)
 	defer cancel()
 
 	id, ok := ctx.Values().Get("id").(string)
@@ -62,7 +62,7 @@ func (h *TrackerHandler) PredictFood(ctx iris.Context) {
 }
 
 func (h *TrackerHandler) AddFood(ctx iris.Context) {
-	c, cancel := context.WithTimeout(ctx.Clone(), 5*time.Second)
+	c, cancel := context.WithTimeout(ctx.Clone(), 60*time.Second)
 	defer cancel()
 
 	var req dto.CreateTrackerDetailRequest
