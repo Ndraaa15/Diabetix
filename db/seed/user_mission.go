@@ -1,8 +1,6 @@
 package seed
 
 import (
-	"time"
-
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
 	"gorm.io/gorm"
 )
@@ -16,8 +14,6 @@ func UserMissionSeeder() Seeder {
 				MissionID: 1,
 				IsDone:    true,
 				ReportID:  1,
-				CreatedAt: time.Now().AddDate(0, 0, -1),
-				UpdatedAt: time.Now(),
 			},
 			{
 				UserID:    "1854723870678847488",
@@ -25,8 +21,6 @@ func UserMissionSeeder() Seeder {
 				MissionID: 2,
 				IsDone:    false,
 				ReportID:  1,
-				CreatedAt: time.Now().AddDate(0, 0, -2),
-				UpdatedAt: time.Now(),
 			},
 			{
 				UserID:    "1854723870678847488",
@@ -34,8 +28,6 @@ func UserMissionSeeder() Seeder {
 				MissionID: 3,
 				IsDone:    false,
 				ReportID:  1,
-				CreatedAt: time.Now().AddDate(0, 0, -3),
-				UpdatedAt: time.Now(),
 			},
 			{
 				UserID:    "1854723870678847488",
@@ -43,8 +35,13 @@ func UserMissionSeeder() Seeder {
 				MissionID: 4,
 				IsDone:    false,
 				ReportID:  1,
-				CreatedAt: time.Now().AddDate(0, 0, -4),
-				UpdatedAt: time.Now(),
+			},
+			{
+				UserID:    "1854723870678847488",
+				IsActive:  true,
+				MissionID: 5,
+				IsDone:    false,
+				ReportID:  1,
 			},
 		}
 

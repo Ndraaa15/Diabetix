@@ -2,6 +2,7 @@ package util
 
 import (
 	"crypto/rand"
+	"errors"
 	"math/big"
 	"time"
 
@@ -29,6 +30,13 @@ func ParseGetArticlesFilter(ctx iris.Context, filter *dto.GetArticlesFilter) err
 	if keywordStr := ctx.URLParam("keyword"); keywordStr != "" {
 		filter.Keyword = keywordStr
 	}
+
+	userID, ok := ctx.Values().Get("id").(string)
+	if !ok {
+		return errx.New().WithCode(iris.StatusBadRequest).WithMessage("User ID context not found").WithError(errors.New("User ID context not found"))
+	}
+
+	filter.UserID = userID
 
 	return nil
 }

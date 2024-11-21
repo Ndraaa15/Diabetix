@@ -8,8 +8,6 @@ import (
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/middleware"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
-	"github.com/Ndraaa15/diabetix-server/pkg/util"
-	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
 )
@@ -44,11 +42,6 @@ func (h *BMIHandler) CreateBMI(ctx iris.Context) {
 
 	var req dto.CreateBMIRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		if validationErr, ok := err.(validator.ValidationErrors); ok {
-			ctx.StopWithJSON(iris.StatusBadRequest, util.WrapValidationErrors(validationErr))
-			return
-		}
-
 		ctx.StopWithJSON(iris.StatusBadRequest, err)
 		return
 	}

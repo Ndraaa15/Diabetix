@@ -26,6 +26,7 @@ func Migrate(env *env.Env, action string) {
 			&domain.Consultation{},
 			&domain.DoctorSchedule{},
 			&domain.Personalization{},
+			&domain.ArticleLike{},
 		); err != nil {
 			zap.S().Fatal(err)
 		}
@@ -44,6 +45,7 @@ func Migrate(env *env.Env, action string) {
 			&domain.Consultation{},
 			&domain.DoctorSchedule{},
 			&domain.Personalization{},
+			&domain.ArticleLike{},
 		); err != nil {
 			zap.S().Fatal(err)
 		}

@@ -108,8 +108,6 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 			return err
 		}
 
-		fmt.Println("report", report)
-
 		tracker, err = uc.trackerStore.GetCurrentTracker(ctx, userID, time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local))
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			tracker, err = uc.trackerStore.CreateTracker(ctx, domain.Tracker{

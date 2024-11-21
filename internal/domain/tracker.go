@@ -7,7 +7,7 @@ type Tracker struct {
 	UserID         string          `json:"userID" gorm:"type:varchar(255);not null"`
 	TotalGlucose   float64         `json:"totalGlucose" gorm:"type:numeric;not null"`
 	Status         string          `json:"status" gorm:"type:varchar(255);not null"`
-	TrackerDetails []TrackerDetail `json:"glucoseTrackerDetails" gorm:"foreignKey:TrackerID;references:ID"`
+	TrackerDetails []TrackerDetail `json:"glucoseTrackerDetails,omitempty" gorm:"foreignKey:TrackerID;references:ID"`
 	ReportID       uint64          `json:"reportID" gorm:"type:integer;not null"`
 	CreatedAt      time.Time       `json:"createdAt" gorm:"type:timestamp;not null;autoCreateTime"`
 	UpdatedAt      time.Time       `json:"updatedAt" gorm:"type:timestamp;not null;autoUpdateTime"`

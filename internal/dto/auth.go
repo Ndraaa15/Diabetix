@@ -17,8 +17,3 @@ type VerificationRequest struct {
 	ID   string `json:"id" validate:"required"`
 	Code string `json:"code" validate:"required"`
 }
-
-type SignInResponse struct {
-	ID    string `json:"id"`
-	Token string `json:"token"`
-}

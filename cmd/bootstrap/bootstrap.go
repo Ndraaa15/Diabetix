@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/Ndraaa15/diabetix-server/pkg/env"
 	"github.com/kataras/iris/v12"
@@ -28,11 +29,29 @@ type BootstrapParams struct {
 }
 
 func Run(params BootstrapParams) {
+	params.Srv.Use(func(ctx iris.Context) {
+		start := time.Now()
+
+		params.Zap.Sugar().Infof("request: method=%s, path=%s, ip=%s, user-agent=%s",
+			ctx.Method(), ctx.Path(), ctx.RemoteAddr(), ctx.GetHeader("User-Agent"))
+
+		ctx.Next()
+
+		duration := time.Since(start)
+		params.Zap.Sugar().Infof("response: status=%d, duration=%s, path=%s",
+			ctx.GetStatusCode(), duration, ctx.Path())
+	})
+
 	params.Srv.Get("/", func(ctx iris.Context) {
 		ctx.JSON(iris.Map{"message": "Hello, world🌍"})
 	})
 
 	group := params.Srv.Party("/api/v1")
+	group.Use(func(ctx iris.Context) {
+		ctx.Application().Logger().Infof("Path: %s", ctx.Path())
+		ctx.Next()
+	})
+
 	for _, handler := range params.Handlers {
 		handler.InitRoutes(group)
 	}

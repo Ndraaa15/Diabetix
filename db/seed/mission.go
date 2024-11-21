@@ -10,7 +10,7 @@ func MissionSeeder() Seeder {
 		missions := []domain.Mission{
 			{
 				ID:     1,
-				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/Laia_Bove_Mermaid-pose.jpg",
+				Image:  "",
 				Exp:    150,
 				Calory: 200,
 				Title:  "Yoga Pagi untuk Keseimbangan Tubuh",
@@ -24,13 +24,13 @@ func MissionSeeder() Seeder {
 	- **Mengurangi stres dan meningkatkan fokus.**
 	- **Meningkatkan kesehatan mental dan fisik.**
 				`,
-				Category:   "Hard",
+				Category:   domain.MissionCategorySport,
 				Duration:   30,
-				Difficulty: "Medium",
+				Difficulty: domain.MissionDifficultyEasy,
 			},
 			{
 				ID:     2,
-				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/anti-inflammatory-smoothie-recipe-2000-824af0bcaabd4966947eca2d87760c18.jpg?t=2024-11-09T18%3A44%3A03.806Z",
+				Image:  "",
 				Exp:    100,
 				Calory: 120,
 				Title:  "Membuat Smoothie Sehat",
@@ -45,13 +45,13 @@ func MissionSeeder() Seeder {
 	- **Memberi energi yang tahan lama.**
 	
 	`,
-				Category:   "Food",
+				Category:   domain.MissionCategoryNutrition,
 				Duration:   10,
-				Difficulty: "Easy",
+				Difficulty: domain.MissionDifficultyMedium,
 			},
 			{
 				ID:     3,
-				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/Bantu-Usir-Stres-Ini-X-Cara-Meditasi-yang-Benar-01.jpg",
+				Image:  "",
 				Exp:    200,
 				Calory: 50,
 				Title:  "Meditasi untuk Relaksasi",
@@ -65,13 +65,13 @@ func MissionSeeder() Seeder {
 	- **Meningkatkan fokus dan konsentrasi.**
 	- **Membantu meningkatkan kualitas tidur.**
 	`,
-				Category:   "Mental",
+				Category:   domain.MissionCategoryMindset,
 				Duration:   15,
-				Difficulty: "Easy",
+				Difficulty: domain.MissionDifficultyMedium,
 			},
 			{
 				ID:     4,
-				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/Catat-Ini-Waktu-Terbaik-untuk-Olahraga-Jogging.jpg",
+				Image:  "",
 				Exp:    250,
 				Calory: 300,
 				Title:  "Jogging Pagi di Taman",
@@ -85,15 +85,15 @@ func MissionSeeder() Seeder {
 	- **Membantu menurunkan berat badan.**
 	- **Memberikan energi positif untuk hari yang lebih baik.**
 				`,
-				Category:   "Olahraga",
+				Category:   domain.MissionCategorySport,
 				Duration:   30,
-				Difficulty: "Hard",
+				Difficulty: domain.MissionDifficultyMedium,
 			},
 			{
 				ID:     5,
-				Image:  "https://ijykzlxhjnlkczmrmjlh.supabase.co/storage/v1/object/public/diabetix/manfaat-membaca-buku-bagi-kesehatan-mental-halodoc.jpg",
+				Image:  "",
 				Exp:    120,
-				Calory: 50,
+				Calory: 0,
 				Title:  "Membaca Buku Inspiratif",
 				Body: `
 	Membaca buku inspiratif dapat membuka wawasan dan memberikan motivasi baru. Dalam misi ini, Anda diminta membaca setidaknya 10 halaman dari buku pilihan Anda yang membahas tema pengembangan diri atau motivasi.
@@ -106,9 +106,9 @@ func MissionSeeder() Seeder {
 	- **Memotivasi diri untuk mencapai tujuan.**
 	- **Meningkatkan konsentrasi dan fokus.**	
 	`,
-				Category:   "Mental",
+				Category:   domain.MissionCategoryMindset,
 				Duration:   20,
-				Difficulty: "Easy",
+				Difficulty: domain.MissionDifficultyEasy,
 			},
 		}
 

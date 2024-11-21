@@ -8,8 +8,6 @@ import (
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/middleware"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
-	"github.com/Ndraaa15/diabetix-server/pkg/util"
-	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
 )
@@ -40,11 +38,6 @@ func (h *UserHandler) CreatePersonalization(ctx iris.Context) {
 
 	var req dto.CreatePersonalizationRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		if validationErr, ok := err.(validator.ValidationErrors); ok {
-			ctx.StopWithJSON(iris.StatusBadRequest, util.WrapValidationErrors(validationErr))
-			return
-		}
-
 		ctx.StopWithJSON(iris.StatusBadRequest, err)
 		return
 	}
@@ -78,7 +71,7 @@ func (h *UserHandler) GetProfile(ctx iris.Context) {
 		return
 	}
 
-	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
+	ctx.StopWithJSON(iris.StatusOK, iris.Map{
 		"message":  "Profiles has been fetched",
 		"profiles": profiles,
 	})
@@ -102,7 +95,7 @@ func (h *UserHandler) GetHomepage(ctx iris.Context) {
 	}
 
 	ctx.StopWithJSON(iris.StatusOK, iris.Map{
-		"message": "Homepage has been fetched",
-		"data":    homePageData,
+		"message":  "Homepage data has been fetched",
+		"response": homePageData,
 	})
 }

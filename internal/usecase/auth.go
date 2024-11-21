@@ -21,7 +21,7 @@ import (
 
 type IAuthUsecase interface {
 	Register(ctx context.Context, req dto.RegisterRequest) (string, error)
-	Login(ctx context.Context, req dto.LoginRequest) (dto.SignInResponse, error)
+	Login(ctx context.Context, req dto.LoginRequest) (string, error)
 	Verify(ctx context.Context, req dto.VerificationRequest) error
 }
 
@@ -123,27 +123,24 @@ func (uc *AuthUsecase) Verify(ctx context.Context, req dto.VerificationRequest) 
 	return nil
 }
 
-func (uc *AuthUsecase) Login(ctx context.Context, req dto.LoginRequest) (dto.SignInResponse, error) {
+func (uc *AuthUsecase) Login(ctx context.Context, req dto.LoginRequest) (string, error) {
 	user, err := uc.authStore.GetUserByEmail(ctx, req.Email)
 	if err != nil {
-		return dto.SignInResponse{}, errx.New().WithCode(iris.StatusInternalServerError).WithMessage("failed get user with email").WithError(err)
+		return "", errx.New().WithCode(iris.StatusInternalServerError).WithMessage("failed get user with email").WithError(err)
 	}
 
 	if !user.IsActive {
-		return dto.SignInResponse{}, errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("user not verified").WithError(errors.New("user not verified"))
+		return "", errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("user not verified").WithError(errors.New("user not verified"))
 	}
 
 	if err := bcrypt.ComparePassword(user.Password, req.Password); err != nil {
-		return dto.SignInResponse{}, errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("invalid password").WithError(err)
+		return "", errx.New().WithCode(iris.StatusUnprocessableEntity).WithMessage("invalid password").WithError(err)
 	}
 
 	token, err := jwt.EncodeToken(&user, 24*time.Hour)
 	if err != nil {
-		return dto.SignInResponse{}, errx.New().WithCode(iris.StatusInternalServerError).WithMessage("failed to encode token").WithError(err)
+		return "", errx.New().WithCode(iris.StatusInternalServerError).WithMessage("failed to encode token").WithError(err)
 	}
 
-	return dto.SignInResponse{
-		ID:    user.ID,
-		Token: token,
-	}, nil
+	return token, nil
 }

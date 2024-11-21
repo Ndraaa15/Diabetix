@@ -37,6 +37,7 @@ func main() {
 	mustProvide(env.New)
 	mustProvide(gemini.NewGemini)
 	mustProvide(cloudinary.NewCloudinary)
+	mustProvide(config.NewValidator)
 
 	mustProvide(store.NewAuthStore)
 	mustProvide(usecase.NewAuthUsecase)
@@ -77,8 +78,7 @@ func main() {
 	}
 
 	if err := c.Invoke(bootstrap.Run); err != nil {
-		zap.S().Error(err)
-		zap.S().Fatal(err)
+		zap.S().Fatalf("Unable to start application: %v", err)
 	}
 }
 
@@ -93,7 +93,7 @@ func handleArgs(env *env.Env) {
 		switch os.Args[1] {
 		case "migrate":
 			if err := migrateCmd.Parse(os.Args[2:]); err != nil {
-				zap.S().Fatal(err)
+				zap.S().Fatalf("Unable to parse migrate command: %v", err)
 			}
 
 			if *migrateAction == "" {
@@ -103,7 +103,7 @@ func handleArgs(env *env.Env) {
 			os.Exit(1)
 		case "seed":
 			if err := seedCmd.Parse(os.Args[2:]); err != nil {
-				zap.S().Fatal(err)
+				zap.S().Fatalf("Unable to parse seed command: %v", err)
 			}
 			seed.Execute(env, *seedDomain)
 			os.Exit(1)

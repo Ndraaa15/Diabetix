@@ -2,16 +2,18 @@ package usecase
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
-	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/store"
+	"github.com/Ndraaa15/diabetix-server/pkg/errx"
+	"github.com/kataras/iris/v12"
 	"gorm.io/gorm"
 )
 
 type IMissionUsecase interface {
-	GetAllMissionUser(ctx context.Context, userID string) ([]domain.UserMission, error)
-	UpdateUserMission(ctx context.Context, userID string, missionID uint64, req dto.UpdateUserMissionRequest) error
+	GetAllUserMission(ctx context.Context, userID string) ([]domain.UserMission, error)
+	UpdateUserMission(ctx context.Context, userID string, missionID uint64) error
 }
 
 type MissionUsecase struct {
@@ -24,52 +26,89 @@ func NewMissionUsecase(missionStore store.IMissionStore) IMissionUsecase {
 	}
 }
 
-func (uc *MissionUsecase) GetAllMissionUser(ctx context.Context, userID string) ([]domain.UserMission, error) {
-	mission, err := uc.missionStore.GetAllMissionUser(ctx, userID)
+func (uc *MissionUsecase) GetAllUserMission(ctx context.Context, userID string) ([]domain.UserMission, error) {
+	mission, err := uc.missionStore.GetAllUserMission(ctx, userID)
 	if err != nil {
-		return nil, err
+		return nil, errx.New().
+			WithCode(iris.StatusInternalServerError).
+			WithMessage("Failed to get all user mission").
+			WithError(err)
 	}
 
 	return mission, nil
 }
 
-func (uc *MissionUsecase) UpdateUserMission(ctx context.Context, userID string, missionID uint64, req dto.UpdateUserMissionRequest) error {
+func (uc *MissionUsecase) UpdateUserMission(ctx context.Context, userID string, missionID uint64) error {
 	userMission, err := uc.missionStore.GetUserMission(ctx, userID, missionID)
 	if err != nil {
-		return err
+		return errx.New().
+			WithCode(iris.StatusInternalServerError).
+			WithMessage("Failed to get user mission").
+			WithError(err)
 	}
 
-	if req.Status == "accepted" {
-		userMission.IsDone = true
+	if userMission.IsDone {
+		return errx.New().
+			WithCode(iris.StatusBadRequest).
+			WithMessage("Mission has been done").
+			WithError(errors.New("Mission has been done"))
 	}
+
+	userMission.IsDone = true
 
 	user, err := uc.missionStore.GetUserByID(ctx, userID)
 	if err != nil {
-		return err
+		return errx.New().
+			WithCode(iris.StatusInternalServerError).
+			WithMessage("Failed to get user").
+			WithError(err)
+	}
+
+	if user.Level.NextLevel == 0 {
+		return errx.New().
+			WithCode(iris.StatusBadRequest).
+			WithMessage("User has reached the maximum level").
+			WithError(errors.New("User has reached the maximum level"))
 	}
 
 	user.CurrentExp += userMission.Mission.Exp
 
-	if user.CurrentExp >= user.Level.TotalExp {
-		// Todo : make sure the level is the next level (and consist in database)
-		user.LevelID = user.LevelID + 1
+	if user.CurrentExp+userMission.Mission.Exp >= user.Level.TotalExp {
+		for user.CurrentExp+userMission.Mission.Exp >= user.Level.TotalExp {
+			level, err := uc.missionStore.GetLevelByID(ctx, user.LevelID)
+			if err != nil {
+				return errx.New().
+					WithCode(iris.StatusInternalServerError).
+					WithMessage("Failed to get level").
+					WithError(err)
+			}
+
+			user.CurrentExp = (user.CurrentExp + userMission.Mission.Exp) - user.Level.TotalExp
+			user.LevelID += level.NextLevel
+
+			if level.NextLevel == 0 {
+				break
+			}
+		}
 	}
 
 	err = uc.missionStore.WithTransaction(ctx, func(tx *gorm.DB) error {
 		if err := uc.missionStore.UpdateUser(ctx, user); err != nil {
-			return err
+			return errx.New().
+				WithCode(iris.StatusInternalServerError).
+				WithMessage("Failed to update user").
+				WithError(err)
 		}
 
 		if err := uc.missionStore.UpdateUserMission(ctx, userMission); err != nil {
-			return err
+			return errx.New().
+				WithCode(iris.StatusInternalServerError).
+				WithMessage("Failed to update user mission").
+				WithError(err)
 		}
 
 		return nil
 	})
-
-	if err != nil {
-		return err
-	}
 
 	return nil
 }

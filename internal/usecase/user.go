@@ -87,7 +87,7 @@ func (uc *UserUsecase) GetDataForHomePage(ctx context.Context, userID string) (d
 		return dto.HomePageResponse{}, err
 	}
 
-	latestArticle, err := uc.userStore.GetLatestArticle(ctx)
+	latestArticle, err := uc.userStore.GetLatestArticle(ctx, userID)
 	if err != nil {
 		return dto.HomePageResponse{}, err
 	}

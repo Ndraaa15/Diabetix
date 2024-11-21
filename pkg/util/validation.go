@@ -6,27 +6,27 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type validationError struct {
-	ActualTag string `json:"tag"`
-	Namespace string `json:"namespace"`
-	Kind      string `json:"kind"`
-	Type      string `json:"type"`
-	Value     string `json:"value"`
-	Param     string `json:"param"`
+func GetErrorValidationMessage(fe validator.FieldError) string {
+	switch fe.Tag() {
+	case "required":
+		return fmt.Sprintf("%s is required", fe.Field())
+	case "email":
+		return fmt.Sprintf("%s is not a valid email", fe.Field())
+	case "max":
+		return fmt.Sprintf("%s must be less than %s", fe.Field(), fe.Param())
+	case "min":
+		return fmt.Sprintf("%s must be more than %s", fe.Field(), fe.Param())
+	case "number":
+		return fmt.Sprintf("%s must be a number", fe.Field())
+	default:
+		return fmt.Sprintf("%s is not valid", fe.Field())
+	}
 }
 
-func WrapValidationErrors(errs validator.ValidationErrors) []validationError {
-	validationErrors := make([]validationError, 0, len(errs))
-	for _, validationErr := range errs {
-		validationErrors = append(validationErrors, validationError{
-			ActualTag: validationErr.ActualTag(),
-			Namespace: validationErr.Namespace(),
-			Kind:      validationErr.Kind().String(),
-			Type:      validationErr.Type().String(),
-			Value:     fmt.Sprintf("%v", validationErr.Value()),
-			Param:     validationErr.Param(),
-		})
+func HandleValidationErrors(ve validator.ValidationErrors) map[string]string {
+	out := make(map[string]string)
+	for _, e := range ve {
+		out[e.Field()] = GetErrorValidationMessage(e)
 	}
-
-	return validationErrors
+	return out
 }

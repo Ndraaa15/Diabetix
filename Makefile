@@ -9,17 +9,17 @@ air:
 	air -c .air.toml
 
 .PHONY: migrate-up
-migrate-up: build
-	./bin/$(APP_NAME) migrate -action up
+migrate-up: 
+	go run cmd/app/main.go migrate -action up
 
 .PHONY: migrate-down
-migrate-down: build
-	./bin/$(APP_NAME) migrate -action down
+migrate-down: 
+	go run cmd/app/main.go migrate -action down
 
 .PHONY: run
-run: build
-	./bin/$(APP_NAME)
+run: 
+	go run cmd/app/main.go
 
-.PHONY: test
-seed: build
-	./bin/$(APP_NAME) seed
+.PHONY: seed
+seed: 
+	go run cmd/app/main.go seed

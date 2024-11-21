@@ -7,7 +7,6 @@ import (
 	"github.com/Ndraaa15/diabetix-server/cmd/bootstrap"
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
-	"github.com/Ndraaa15/diabetix-server/pkg/util"
 	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
@@ -15,11 +14,13 @@ import (
 
 type AuthHandler struct {
 	authUsecase usecase.IAuthUsecase
+	validator   *validator.Validate
 }
 
-func NewAuthHandler(authUsecase usecase.IAuthUsecase) bootstrap.Handler {
+func NewAuthHandler(authUsecase usecase.IAuthUsecase, validator *validator.Validate) bootstrap.Handler {
 	return &AuthHandler{
 		authUsecase: authUsecase,
+		validator:   validator,
 	}
 }
 
@@ -36,11 +37,6 @@ func (h *AuthHandler) Register(ctx iris.Context) {
 
 	var req dto.RegisterRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		if validationErr, ok := err.(validator.ValidationErrors); ok {
-			ctx.StopWithJSON(iris.StatusBadRequest, util.WrapValidationErrors(validationErr))
-			return
-		}
-
 		ctx.StopWithJSON(iris.StatusBadRequest, err)
 		return
 	}
@@ -63,11 +59,6 @@ func (h *AuthHandler) Verify(ctx iris.Context) {
 
 	var req dto.VerificationRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		if validationErr, ok := err.(validator.ValidationErrors); ok {
-			ctx.StopWithJSON(iris.StatusBadRequest, util.WrapValidationErrors(validationErr))
-			return
-		}
-
 		ctx.StopWithJSON(iris.StatusBadRequest, err)
 		return
 	}
@@ -91,11 +82,6 @@ func (h *AuthHandler) Login(ctx iris.Context) {
 
 	var req dto.LoginRequest
 	if err := ctx.ReadJSON(&req); err != nil {
-		if validationErr, ok := err.(validator.ValidationErrors); ok {
-			ctx.StopWithJSON(iris.StatusBadRequest, util.WrapValidationErrors(validationErr))
-			return
-		}
-
 		ctx.StopWithJSON(iris.StatusBadRequest, err)
 		return
 	}
@@ -107,7 +93,7 @@ func (h *AuthHandler) Login(ctx iris.Context) {
 	}
 
 	ctx.StopWithJSON(iris.StatusOK, iris.Map{
-		"message":  "User has been logged in",
-		"response": res,
+		"message": "User has been logged in",
+		"token":   res,
 	})
 }

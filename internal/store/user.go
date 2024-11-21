@@ -12,7 +12,7 @@ type IUserStore interface {
 	CreateBMI(ctx context.Context, bmi domain.BMI) (domain.BMI, error)
 	CreatePersonalization(ctx context.Context, personalization domain.Personalization) (domain.Personalization, error)
 	WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error
-	GetLatestArticle(ctx context.Context) ([]domain.Article, error)
+	GetLatestArticle(ctx context.Context, userID string) ([]domain.ArticleResponse, error)
 	GetLatestUserMission(ctx context.Context, userID string) ([]domain.UserMission, error)
 	GetCurrentBMI(ctx context.Context, userID string) (domain.BMI, error)
 	GetCurrentTracker(ctx context.Context, userID string) (domain.Tracker, error)
@@ -57,9 +57,16 @@ func (r *UserStore) WithTransaction(ctx context.Context, fn func(tx *gorm.DB) er
 	return r.db.Transaction(fn)
 }
 
-func (r *UserStore) GetLatestArticle(ctx context.Context) ([]domain.Article, error) {
-	var articles []domain.Article
-	if err := r.db.WithContext(ctx).Model(&domain.Article{}).Order("created_at desc").Limit(3).Find(&articles).Error; err != nil {
+func (r *UserStore) GetLatestArticle(ctx context.Context, userID string) ([]domain.ArticleResponse, error) {
+	var articles []domain.ArticleResponse
+	queryBuilder := r.db.Table("articles").
+		Select("articles.*, COALESCE(COUNT(article_likes.article_id), 0) AS likes, "+
+			"CASE WHEN article_likes.user_id = ? THEN true ELSE false END AS is_liked_by_current_user", userID).
+		Joins("LEFT JOIN article_likes ON article_likes.article_id = articles.id").
+		Group("articles.id, article_likes.user_id").
+		Scan(&articles).Limit(3).Order("created_at desc")
+
+	if err := queryBuilder.Error; err != nil {
 		return nil, err
 	}
 
@@ -68,7 +75,7 @@ func (r *UserStore) GetLatestArticle(ctx context.Context) ([]domain.Article, err
 
 func (r *UserStore) GetLatestUserMission(ctx context.Context, userID string) ([]domain.UserMission, error) {
 	var missions []domain.UserMission
-	if err := r.db.WithContext(ctx).Model(&domain.UserMission{}).Where("user_id = ?", userID).Order("created_at desc").Limit(3).Find(&missions).Error; err != nil {
+	if err := r.db.WithContext(ctx).Model(&domain.UserMission{}).Preload("Mission").Where("user_id = ?", userID).Order("created_at desc").Limit(3).Find(&missions).Error; err != nil {
 		return nil, err
 	}
 

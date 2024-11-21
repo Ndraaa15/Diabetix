@@ -10,7 +10,7 @@ type User struct {
 	Email           string          `json:"email" gorm:"type:varchar(255);not null;unique"`
 	Birth           time.Time       `json:"birth" gorm:"type:date;not null"`
 	IsActive        bool            `json:"isActive" gorm:"type:boolean;not null;default:false"`
-	Password        string          `json:"password" gorm:"type:varchar(255);not null"`
+	Password        string          `json:"-" gorm:"type:varchar(255);not null"`
 	CurrentExp      uint64          `json:"currentExp" gorm:"type:integer;not null"`
 	LevelID         uint64          `json:"levelID" gorm:"type:integer;not null"`
 	Level           Level           `json:"level" gorm:"foreignKey:LevelID;references:ID"`
