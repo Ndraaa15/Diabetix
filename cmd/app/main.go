@@ -62,6 +62,9 @@ func main() {
 
 	mustProvide(usecase.NewFileUploadUsecase)
 
+	mustProvide(store.NewDoctorStore)
+	mustProvide(usecase.NewDoctorUsecase)
+
 	// mustProvide(config.NewCron())
 
 	mustProvide(handler.NewReportHandler, dig.Group("handlers"))
@@ -72,6 +75,7 @@ func main() {
 	mustProvide(handler.NewAuthHandler, dig.Group("handlers"))
 	mustProvide(handler.NewTrackerHandler, dig.Group("handlers"))
 	mustProvide(handler.NewUserHandler, dig.Group("handlers"))
+	mustProvide(handler.NewDoctorHandler, dig.Group("handlers"))
 
 	if err := c.Invoke(func(e *env.Env) {
 		handleArgs(e)

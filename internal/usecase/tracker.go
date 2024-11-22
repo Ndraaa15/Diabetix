@@ -234,8 +234,17 @@ func (r *TrackerUsecase) GetAllTracker(ctx context.Context, userID string) (dto.
 			WithError(err)
 	}
 
+	sevenLatestTracker, err := r.trackerStore.GetSevenLatestTrackers(ctx, userID)
+	if err != nil {
+		return dto.TrackerResponse{}, errx.New().
+			WithCode(iris.StatusInternalServerError).
+			WithMessage("Failed to get seven latest tracker").
+			WithError(err)
+	}
+
 	return dto.TrackerResponse{
-		CurrentTracker: currentTracker,
-		Trackers:       trackers,
+		CurrentTracker:      currentTracker,
+		SevenLatestTrackers: sevenLatestTracker,
+		Trackers:            trackers,
 	}, nil
 }

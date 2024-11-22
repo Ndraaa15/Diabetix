@@ -18,7 +18,7 @@ type Doctor struct {
 type DoctorSchedule struct {
 	ID        uint64    `json:"id" gorm:"primaryKey;autoIncrement"`
 	DoctorID  uint64    `json:"doctorID" gorm:"type:integer;not null"`
-	Doctor    Doctor    `json:"doctor,omitempty" gorm:"references:ID;foreignKey:DoctorID"`
+	Doctor    Doctor    `json:"-" gorm:"references:ID;foreignKey:DoctorID"`
 	StartTime string    `json:"startTime" gorm:"type:varchar(255);not null"`
 	EndTime   string    `json:"endTime" gorm:"type:varchar(255);not null"`
 	IsOpen    bool      `json:"isOpen" gorm:"type:boolean;not null;default:false"`

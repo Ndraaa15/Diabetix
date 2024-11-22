@@ -18,6 +18,7 @@ type ITrackerStore interface {
 	CreateReport(ctx context.Context, report domain.Report) (domain.Report, error)
 	UpdateTracker(ctx context.Context, tracker domain.Tracker) error
 	WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error
+	GetSevenLatestTrackers(ctx context.Context, userID string) ([]domain.Tracker, error)
 }
 
 type TrackerStore struct {
@@ -112,4 +113,15 @@ func (r *TrackerStore) CreateReport(ctx context.Context, report domain.Report) (
 
 func (r *TrackerStore) WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error {
 	return r.db.Transaction(fn)
+}
+
+func (r *TrackerStore) GetSevenLatestTrackers(ctx context.Context, userID string) ([]domain.Tracker, error) {
+	var trackers []domain.Tracker
+
+	err := r.db.Where("user_id = ?", userID).Order("created_at DESC").Limit(7).Find(&trackers).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return trackers, nil
 }

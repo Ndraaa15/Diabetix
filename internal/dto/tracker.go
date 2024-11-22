@@ -28,6 +28,7 @@ type PredictFoodResponse struct {
 }
 
 type TrackerResponse struct {
-	CurrentTracker domain.Tracker   `json:"currentTracker"`
-	Trackers       []domain.Tracker `json:"trackers"`
+	CurrentTracker      domain.Tracker   `json:"currentTracker"`
+	SevenLatestTrackers []domain.Tracker `json:"sevenLatestTrackers"`
+	Trackers            []domain.Tracker `json:"trackers"`
 }

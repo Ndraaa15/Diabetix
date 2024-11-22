@@ -62,7 +62,7 @@ func (h *DoctorHandler) GetAllDoctor(ctx iris.Context) {
 	}
 
 	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
-		"message": "Articles has been fetched",
+		"message": "Doctors has been fetched",
 		"doctors": doctors,
 	})
 
@@ -94,8 +94,8 @@ func (h *DoctorHandler) GetDoctorByID(ctx iris.Context) {
 	}
 
 	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
-		"message": "Article has been fetched",
-		"article": article,
+		"message": "Doctor has been fetched",
+		"doctor":  article,
 	})
 
 }
