@@ -24,7 +24,7 @@ func main() {
 
 	mustProvide := func(constructor interface{}, opts ...dig.ProvideOption) {
 		if err := c.Provide(constructor, opts...); err != nil {
-			panic(err)
+			zap.S().Fatalf("Unable to start application: %v", err)
 		}
 	}
 
@@ -61,6 +61,8 @@ func main() {
 	mustProvide(usecase.NewReportUsecase)
 
 	mustProvide(usecase.NewFileUploadUsecase)
+
+	// mustProvide(config.NewCron())
 
 	mustProvide(handler.NewReportHandler, dig.Group("handlers"))
 	mustProvide(handler.NewMissionHandler, dig.Group("handlers"))

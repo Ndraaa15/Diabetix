@@ -7,7 +7,6 @@ import (
 	"github.com/Ndraaa15/diabetix-server/pkg/env"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
-	"github.com/robfig/cron/v3"
 	"go.uber.org/dig"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -24,10 +23,10 @@ type HandlerOut struct {
 
 type BootstrapParams struct {
 	dig.In
-	Srv      *iris.Application
-	Zap      *zap.Logger
-	Env      *env.Env
-	Cron     *cron.Cron
+	Srv *iris.Application
+	Zap *zap.Logger
+	Env *env.Env
+	// Cron     *cron.Cron
 	Db       *gorm.DB
 	Handlers []Handler `group:"handlers"`
 }
