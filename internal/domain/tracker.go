@@ -41,7 +41,7 @@ const (
 type TrackerDetailLevelGlycemic string
 
 const (
-	TrackerDetailLevelGlycemicLow    TrackerDetailLevelGlycemic = "Renda"
+	TrackerDetailLevelGlycemicLow    TrackerDetailLevelGlycemic = "Rendah"
 	TrackerDetailLevelGlycemicNormal TrackerDetailLevelGlycemic = "Normal"
 	TrackerDetailLevelGlycemicHigh   TrackerDetailLevelGlycemic = "Tinggi"
 )

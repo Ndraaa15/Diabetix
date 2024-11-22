@@ -24,6 +24,10 @@ type Env struct {
 	AppName             string `mapstructure:"APP_NAME"`
 	AppAddr             string `mapstructure:"APP_ADDR"`
 	AppPort             string `mapstructure:"APP_PORT"`
+	MidtransAPIKey      string `mapstructure:"MIDTRANS_API_KEY"`
+	ZoomAPIKey          string `mapstructure:"ZOOM_API_KEY"`
+	ZoomAPISecret       string `mapstructure:"ZOOM_API_SECRET"`
+	ZoomUserID          string `mapstructure:"ZOOM_USER_ID"`
 }
 
 func New() *Env {

@@ -11,6 +11,10 @@ import (
 type IDoctorStore interface {
 	GetAllDoctor(ctx context.Context, filter dto.GetDoctorsFilter) ([]domain.Doctor, error)
 	GetDoctorByID(ctx context.Context, doctorID uint64) (domain.Doctor, error)
+	CreateConsultation(ctx context.Context, data domain.Consultation) error
+	GetDoctorScheduleByID(ctx context.Context, doctorScheduleID uint64) (domain.DoctorSchedule, error)
+	UpdateDoctorSchedule(ctx context.Context, doctorSchedule domain.DoctorSchedule) error
+	WithTransaction(ctx context.Context, fn func(ctx context.Context) error) error
 }
 
 type DoctorStore struct {
@@ -45,7 +49,8 @@ func (r *DoctorStore) GetDoctorByID(ctx context.Context, doctorID uint64) (domai
 }
 
 func (r *DoctorStore) CreateConsultation(ctx context.Context, data domain.Consultation) error {
-	if err := r.db.WithContext(ctx).Create(&data).Error; err != nil {
+	// Todo : if consultation is already exist with the same doctor schedule id and user id and status is not done, return error
+	if err := r.db.WithContext(ctx).Model(&domain.Consultation{}).Create(&data).Error; err != nil {
 		return err
 	}
 
@@ -59,4 +64,32 @@ func (r *DoctorStore) GetConsultationByUserID(ctx context.Context, userID string
 	}
 
 	return consultations, nil
+}
+
+func (r *DoctorStore) GetDoctorScheduleByID(ctx context.Context, doctorScheduleID uint64) (domain.DoctorSchedule, error) {
+	var doctorSchedule domain.DoctorSchedule
+	if err := r.db.WithContext(ctx).Model(&domain.DoctorSchedule{}).Where("id = ?", doctorScheduleID).First(&doctorSchedule).Error; err != nil {
+		return doctorSchedule, err
+	}
+
+	return doctorSchedule, nil
+}
+
+func (r *DoctorStore) UpdateDoctorSchedule(ctx context.Context, doctorSchedule domain.DoctorSchedule) error {
+	if err := r.db.WithContext(ctx).Model(&domain.DoctorSchedule{}).Updates(&doctorSchedule).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *DoctorStore) WithTransaction(ctx context.Context, fn func(ctx context.Context) error) error {
+	tx := r.db.WithContext(ctx).Begin()
+	if err := fn(ctx); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }

@@ -15,6 +15,7 @@ import (
 	"github.com/Ndraaa15/diabetix-server/pkg/env"
 	"github.com/Ndraaa15/diabetix-server/pkg/gemini"
 	"github.com/Ndraaa15/diabetix-server/pkg/gomail"
+	"github.com/Ndraaa15/diabetix-server/pkg/midtrans"
 	"go.uber.org/dig"
 	"go.uber.org/zap"
 )
@@ -38,6 +39,7 @@ func main() {
 	mustProvide(gemini.NewGemini)
 	mustProvide(cloudinary.NewCloudinary)
 	mustProvide(config.NewValidator)
+	mustProvide(midtrans.NewMidtrans)
 
 	mustProvide(store.NewAuthStore)
 	mustProvide(usecase.NewAuthUsecase)

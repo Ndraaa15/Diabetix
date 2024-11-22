@@ -77,3 +77,16 @@ func GenerateRandomMission(mission domain.Mission, total int) []domain.Mission {
 	}
 	return missions
 }
+
+func GenerateRandomString(length int) string {
+	code := make([]byte, length)
+	for i := range code {
+		n, err := rand.Int(rand.Reader, big.NewInt(9))
+		if err != nil {
+			return ""
+		}
+
+		code[i] = numberCharset[n.Int64()]
+	}
+	return string(code)
+}

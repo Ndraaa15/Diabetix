@@ -6,8 +6,10 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cloudinary/cloudinary-go v1.7.0
 	github.com/kataras/iris/v12 v12.2.11
+	github.com/midtrans/midtrans-go v1.3.8
 	github.com/robfig/cron/v3 v3.0.0
 	github.com/spf13/viper v1.19.0
+	github.com/zoom-lib-golang/zoom-lib-golang v1.0.2
 	go.uber.org/dig v1.18.0
 	go.uber.org/zap v1.27.0
 	google.golang.org/api v0.186.0
@@ -31,6 +33,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.5 // indirect
@@ -40,7 +43,6 @@ require (
 	github.com/jackc/pgx/v5 v5.5.5 // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
-	github.com/midtrans/midtrans-go v1.3.8 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.51.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.51.0 // indirect
