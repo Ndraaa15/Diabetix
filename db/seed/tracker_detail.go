@@ -11,7 +11,6 @@ func TrackerDetailSeeder() Seeder {
 	return func(db *gorm.DB) error {
 		trackerDetails := []domain.TrackerDetail{
 			{
-				ID:            1,
 				TrackerID:     1,
 				FoodImage:     "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/green-salad.jpg",
 				FoodName:      "Salad",
@@ -26,7 +25,6 @@ func TrackerDetailSeeder() Seeder {
 				UpdatedAt:     time.Now(),
 			},
 			{
-				ID:            2,
 				TrackerID:     1,
 				FoodImage:     "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/apel4jpg-20231211013431.jpg",
 				FoodName:      "Apel",
@@ -41,7 +39,6 @@ func TrackerDetailSeeder() Seeder {
 				UpdatedAt:     time.Now(),
 			},
 			{
-				ID:            3,
 				TrackerID:     1,
 				FoodImage:     "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/0a0717810b73a1672a029c29788e557b_creamy_alfredo_pasta_long_left_1080_850.jpg",
 				FoodName:      "Pasta",
@@ -56,7 +53,6 @@ func TrackerDetailSeeder() Seeder {
 				UpdatedAt:     time.Now(),
 			},
 			{
-				ID:            4,
 				TrackerID:     2,
 				FoodImage:     "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/mixed-berry-breakfast-smoothie-7959466-1x1-e0ad2304222e49508cda7b73b21de921.jpg",
 				FoodName:      "Smoothie",
@@ -71,7 +67,6 @@ func TrackerDetailSeeder() Seeder {
 				UpdatedAt:     time.Now(),
 			},
 			{
-				ID:            5,
 				TrackerID:     3,
 				FoodImage:     "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/thumb.jpg",
 				FoodName:      "Rice and Vegetables",

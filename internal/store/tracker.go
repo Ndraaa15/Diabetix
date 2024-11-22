@@ -112,7 +112,19 @@ func (r *TrackerStore) CreateReport(ctx context.Context, report domain.Report) (
 }
 
 func (r *TrackerStore) WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error {
-	return r.db.Transaction(fn)
+	tx := r.db.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	if err := fn(tx); err != nil {
+		if rbErr := tx.Rollback().Error; rbErr != nil {
+			return rbErr
+		}
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (r *TrackerStore) GetSevenLatestTrackers(ctx context.Context, userID string) ([]domain.Tracker, error) {

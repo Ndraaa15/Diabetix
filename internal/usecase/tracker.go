@@ -111,6 +111,7 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 			err     error
 		)
 
+		// Fetch or Create Report
 		report, err = uc.trackerStore.GetCurrentReport(ctx, userID, util.GetCurrentDate())
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			report, err = uc.trackerStore.CreateReport(ctx, domain.Report{
@@ -133,6 +134,7 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 				WithError(err)
 		}
 
+		// Fetch Personalization
 		personalization, err := uc.trackerStore.GetPersonalization(ctx, userID)
 		if err != nil {
 			return errx.New().
@@ -141,6 +143,7 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 				WithError(err)
 		}
 
+		// Fetch or Create Tracker
 		tracker, err = uc.trackerStore.GetCurrentTracker(ctx, userID, util.GetCurrentDate())
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			tracker, err = uc.trackerStore.CreateTracker(ctx, domain.Tracker{
@@ -164,27 +167,25 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 				WithError(err)
 		}
 
+		// Calculate Glycemic Level
 		var levelGlycemic string
-		if req.IndexGlycemic <= 55 {
+		switch {
+		case req.IndexGlycemic <= 55:
 			levelGlycemic = string(domain.TrackerDetailLevelGlycemicLow)
-		} else if req.IndexGlycemic >= 56 && req.IndexGlycemic <= 69 {
+		case req.IndexGlycemic <= 69:
 			levelGlycemic = string(domain.TrackerDetailLevelGlycemicNormal)
-		} else {
+		default:
 			levelGlycemic = string(domain.TrackerDetailLevelGlycemicHigh)
 		}
 
-		// Todo : change status with proper calculation
-		var status string
-		if tracker.TotalGlucose+req.Glucose > personalization.MaxGlucose {
-			status = string(domain.TrackerStatusHigh)
-		} else if tracker.TotalGlucose+req.Glucose <= personalization.MaxGlucose {
-			status = string(domain.TrackerStatusNormal)
-		} else if tracker.TotalGlucose+req.Glucose < personalization.MaxGlucose {
-			status = string(domain.TrackerStatusLow)
+		// Update Tracker
+		tracker.TotalGlucose += req.Glucose
+		switch {
+		case tracker.TotalGlucose > personalization.MaxGlucose:
+			tracker.Status = string(domain.TrackerStatusHigh)
+		case tracker.TotalGlucose <= personalization.MaxGlucose:
+			tracker.Status = string(domain.TrackerStatusNormal)
 		}
-
-		tracker.TotalGlucose = tracker.TotalGlucose + req.Glucose
-		tracker.Status = status
 
 		data := domain.TrackerDetail{
 			FoodName:      req.FoodName,
@@ -199,14 +200,14 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 			TrackerID:     tracker.ID,
 		}
 
-		if err := uc.trackerStore.UpdateTracker(ctx, tracker); err != nil {
+		if err := tx.Model(&domain.Tracker{}).Where("id = ?", tracker.ID).Updates(tracker).Error; err != nil {
 			return errx.New().
 				WithCode(iris.StatusInternalServerError).
 				WithMessage("Failed to update tracker").
 				WithError(err)
 		}
 
-		if err := uc.trackerStore.CreateTrackerDetail(ctx, data); err != nil {
+		if err := tx.Model(&domain.TrackerDetail{}).Create(&data).Error; err != nil {
 			return errx.New().
 				WithCode(iris.StatusInternalServerError).
 				WithMessage("Failed to create tracker detail").
@@ -216,7 +217,6 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 		return nil
 	})
 }
-
 func (r *TrackerUsecase) GetAllTracker(ctx context.Context, userID string) (dto.TrackerResponse, error) {
 	trackers, err := r.trackerStore.GetAllTracker(ctx, userID)
 	if err != nil {
