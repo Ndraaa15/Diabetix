@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"math"
 	"time"
 
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
@@ -84,7 +85,7 @@ func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.Create
 		Gender:              gender,
 		Age:                 age,
 		FrequenceSport:      frequenceSport,
-		MaxGlucose:          maxGlucose / 4.0,
+		MaxGlucose:          math.Round(maxGlucose / 4.0),
 		DiabetesInheritance: req.DiabetesInheritance,
 	}
 
@@ -109,9 +110,11 @@ func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.Create
 		UserID: req.UserID,
 		Height: req.Height,
 		Weight: req.Weight,
-		BMI:    bmiFactor,
+		BMI:    math.Round(bmiFactor*10) / 10,
 		Status: bmiStatus,
 	}
+
+	// Todo : add user mission
 
 	err = uc.userStore.WithTransaction(ctx, func(tx *gorm.DB) error {
 		if err := tx.WithContext(ctx).Model(&domain.Personalization{}).Create(&personalization).Error; err != nil {

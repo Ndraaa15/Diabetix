@@ -47,6 +47,8 @@ func CreateTracker(ctx context.Context, db *gorm.DB) error {
 		return fmt.Errorf("failed to fetch active users: %w", err)
 	}
 
+	// Todo : add max glucose
+
 	if len(users) == 0 {
 		fmt.Println("No active users found.")
 		return nil

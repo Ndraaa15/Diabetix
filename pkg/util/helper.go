@@ -58,6 +58,14 @@ func ParseGetReportsFilter(ctx iris.Context, filter *dto.GetReportsFilter) error
 	return nil
 }
 
+func ParseGetDoctorsFilter(ctx iris.Context, filter *dto.GetDoctorsFilter) error {
+	if keywordStr := ctx.URLParam("keyword"); keywordStr != "" {
+		filter.Keyword = keywordStr
+	}
+
+	return nil
+}
+
 func GetCurrentDate() time.Time {
 	return time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
 }

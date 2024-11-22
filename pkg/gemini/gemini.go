@@ -74,7 +74,7 @@ Previous food consumption history (JSON format):
 %s
 
 Analyze the provided image and return a response in the JSON structure above. Provide dietary advice based on the cumulative nutritional values of today's meals. 
-The advice should address balancing glucose, calorie, fat, carbohydrate, and protein intake.
+The advice should address balancing glucose, calorie, fat, carbohydrate, indexGlycemic, and protein intake. Don't add any additional information to the response.
 `, previousFoodsJSON)
 
 	genaiParts := []genai.Part{

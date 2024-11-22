@@ -44,7 +44,7 @@ func (r *TrackerStore) GetCurrentTracker(ctx context.Context, userID string, dat
 func (r *TrackerStore) GetAllTracker(ctx context.Context, userID string) ([]domain.Tracker, error) {
 	var trackers []domain.Tracker
 
-	err := r.db.Where("user_id = ?", userID).Preload("TrackerDetails").Find(&trackers).Error
+	err := r.db.Where("user_id = ?", userID).Preload("TrackerDetails").Find(&trackers).Order("created_by DESC").Error
 	if err != nil {
 		return nil, err
 	}

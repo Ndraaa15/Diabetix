@@ -8,17 +8,22 @@ import (
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/middleware"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
+	"github.com/Ndraaa15/diabetix-server/pkg/errx"
+	"github.com/Ndraaa15/diabetix-server/pkg/util"
+	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
 )
 
 type TrackerHandler struct {
 	trackerUsecase usecase.ITrackerUsecase
+	validator      *validator.Validate
 }
 
-func NewTrackerHandler(trackerUsecase usecase.ITrackerUsecase) bootstrap.Handler {
+func NewTrackerHandler(trackerUsecase usecase.ITrackerUsecase, validator *validator.Validate) bootstrap.Handler {
 	return &TrackerHandler{
 		trackerUsecase: trackerUsecase,
+		validator:      validator,
 	}
 }
 
@@ -34,25 +39,35 @@ func (h *TrackerHandler) PredictFood(ctx iris.Context) {
 	c, cancel := context.WithTimeout(ctx.Clone(), 60*time.Second)
 	defer cancel()
 
-	id, ok := ctx.Values().Get("id").(string)
+	userID, ok := ctx.Values().Get("id").(string)
 	if !ok {
 		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
-			"message": "User ID context not found",
+			"message": "Failed to get user ID from context",
+			"error":   "Failed to get user ID from context",
 		})
+		return
 	}
 
 	file, fileHeader, err := ctx.FormFile("foodImage")
 	if err != nil {
-		ctx.StopWithJSON(iris.StatusBadRequest, err)
+		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+			"message": "Invalid request body",
+			"error":   err.Error(),
+		})
 		return
 	}
 
 	defer file.Close()
 
-	result, err := h.trackerUsecase.PredictFood(c, fileHeader, file, id)
+	result, err := h.trackerUsecase.PredictFood(c, fileHeader, file, userID)
 	if err != nil {
-		ctx.StopWithJSON(iris.StatusInternalServerError, err)
-		return
+		if errx, ok := err.(*errx.Errx); ok {
+			ctx.StopWithJSON(errx.Code, iris.Map{
+				"message": errx.Message,
+				"error":   errx.Err.Error(),
+			})
+			return
+		}
 	}
 
 	ctx.StopWithJSON(iris.StatusOK, iris.Map{
@@ -65,23 +80,43 @@ func (h *TrackerHandler) AddFood(ctx iris.Context) {
 	c, cancel := context.WithTimeout(ctx.Clone(), 60*time.Second)
 	defer cancel()
 
-	var req dto.CreateTrackerDetailRequest
-	if err := ctx.ReadJSON(&req); err != nil {
-		ctx.StopWithJSON(iris.StatusBadRequest, err)
-		return
-	}
-
-	id, ok := ctx.Values().Get("id").(string)
+	userID, ok := ctx.Values().Get("id").(string)
 	if !ok {
 		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
-			"message": "User ID context not found",
+			"message": "Failed to get user ID from context",
+			"error":   "Failed to get user ID from context",
 		})
+		return
 	}
 
-	err := h.trackerUsecase.AddFood(c, req, id)
-	if err != nil {
-		ctx.StopWithJSON(iris.StatusInternalServerError, err)
+	var req dto.CreateTrackerDetailRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+			"message": "Invalid request body",
+			"error":   err.Error(),
+		})
 		return
+	}
+
+	if err := h.validator.Struct(req); err != nil {
+		if valErr, ok := err.(validator.ValidationErrors); ok {
+			ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
+				"message": "Invalid request body",
+				"error":   util.HandleValidationErrors(valErr),
+			})
+			return
+		}
+	}
+
+	err := h.trackerUsecase.AddFood(c, req, userID)
+	if err != nil {
+		if errx, ok := err.(*errx.Errx); ok {
+			ctx.StopWithJSON(errx.Code, iris.Map{
+				"message": errx.Message,
+				"error":   errx.Err.Error(),
+			})
+			return
+		}
 	}
 
 	ctx.StopWithJSON(iris.StatusCreated, iris.Map{
@@ -96,16 +131,25 @@ func (h *TrackerHandler) GetAllTracker(ctx iris.Context) {
 	userID, ok := ctx.Values().Get("id").(string)
 	if !ok {
 		ctx.StopWithJSON(iris.StatusBadRequest, iris.Map{
-			"message": "User ID not found",
+			"message": "Failed to get user ID from context",
+			"error":   "Failed to get user ID from context",
 		})
 		return
 	}
 
 	listTracker, err := h.trackerUsecase.GetAllTracker(c, userID)
 	if err != nil {
-		ctx.StopWithJSON(iris.StatusInternalServerError, err)
-		return
+		if errx, ok := err.(*errx.Errx); ok {
+			ctx.StopWithJSON(errx.Code, iris.Map{
+				"message": errx.Message,
+				"error":   errx.Err.Error(),
+			})
+			return
+		}
 	}
 
-	ctx.StopWithJSON(iris.StatusOK, listTracker)
+	ctx.StopWithJSON(iris.StatusOK, iris.Map{
+		"message": "Success retrieve all tracker",
+		"result":  listTracker,
+	})
 }

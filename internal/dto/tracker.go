@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/Ndraaa15/diabetix-server/internal/domain"
+
 type CreateTrackerDetailRequest struct {
 	FoodName      string  `json:"foodName" validate:"required"`
 	FoodImage     string  `json:"foodImage" validate:"required"`
@@ -23,4 +25,9 @@ type PredictFoodResponse struct {
 	Advice         string  `json:"advice"`
 	CurrentGlucose float64 `json:"currentGlucose"`
 	MaxGlucose     float64 `json:"maxGlucose"`
+}
+
+type TrackerResponse struct {
+	CurrentTracker domain.Tracker   `json:"currentTracker"`
+	Trackers       []domain.Tracker `json:"trackers"`
 }

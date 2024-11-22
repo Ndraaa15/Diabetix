@@ -6,8 +6,9 @@ type Tracker struct {
 	ID             uint64          `json:"id" gorm:"primaryKey;autoIncrement"`
 	UserID         string          `json:"userID" gorm:"type:varchar(255);not null"`
 	TotalGlucose   float64         `json:"totalGlucose" gorm:"type:numeric;not null"`
+	MaxGlucose     float64         `json:"maxGlucose" gorm:"type:numeric;not null"`
 	Status         string          `json:"status" gorm:"type:varchar(255);not null"`
-	TrackerDetails []TrackerDetail `json:"glucoseTrackerDetails,omitempty" gorm:"foreignKey:TrackerID;references:ID"`
+	TrackerDetails []TrackerDetail `json:"glucoseTrackerDetails" gorm:"foreignKey:TrackerID;references:ID"`
 	ReportID       uint64          `json:"reportID" gorm:"type:integer;not null"`
 	CreatedAt      time.Time       `json:"createdAt" gorm:"type:timestamp;not null;autoCreateTime"`
 	UpdatedAt      time.Time       `json:"updatedAt" gorm:"type:timestamp;not null;autoUpdateTime"`
@@ -30,3 +31,17 @@ type TrackerDetail struct {
 }
 
 type TrackerStatus string
+
+const (
+	TrackerStatusNormal TrackerStatus = "Normal"
+	TrackerStatusHigh   TrackerStatus = "Tinggi"
+	TrackerStatusLow    TrackerStatus = "Rendah"
+)
+
+type TrackerDetailLevelGlycemic string
+
+const (
+	TrackerDetailLevelGlycemicLow    TrackerDetailLevelGlycemic = "Renda"
+	TrackerDetailLevelGlycemicNormal TrackerDetailLevelGlycemic = "Normal"
+	TrackerDetailLevelGlycemicHigh   TrackerDetailLevelGlycemic = "Tinggi"
+)

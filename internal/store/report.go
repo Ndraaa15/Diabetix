@@ -2,7 +2,6 @@ package store
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
@@ -24,7 +23,6 @@ func NewReportStore(db *gorm.DB) IReportStore {
 }
 
 func (r *ReportStore) GetAllReport(ctx context.Context, userID string, filter dto.GetReportsFilter) ([]domain.Report, error) {
-	fmt.Println(userID)
 	var reports []domain.Report
 	query := r.db.Where("user_id = ?", userID).Preload("UserMissions.Mission").Preload("Trackers.TrackerDetails").Order("created_at desc")
 

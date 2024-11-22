@@ -37,6 +37,8 @@ func Execute(env *env.Env, name string) {
 			"tracker",
 			"tracker_detail",
 			"personalization",
+			"doctor",
+			"doctor_schedule",
 		}
 
 		for _, seederName := range seederOrder {
@@ -87,4 +89,6 @@ func RegisterSeeder() {
 	seeders["tracker"] = TrackerSeeder()
 	seeders["tracker_detail"] = TrackerDetailSeeder()
 	seeders["personalization"] = PersonalizationSeeder()
+	seeders["doctor"] = DoctorSeeder()
+	seeders["doctor_schedule"] = DoctorScheduleSeeder()
 }

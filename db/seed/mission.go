@@ -10,7 +10,7 @@ func MissionSeeder() Seeder {
 		missions := []domain.Mission{
 			{
 				ID:     1,
-				Image:  "",
+				Image:  "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/yoga.jpg",
 				Exp:    150,
 				Calory: 200,
 				Title:  "Yoga Pagi untuk Keseimbangan Tubuh",
@@ -30,7 +30,7 @@ func MissionSeeder() Seeder {
 			},
 			{
 				ID:     2,
-				Image:  "",
+				Image:  "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/smooties.jpg",
 				Exp:    100,
 				Calory: 120,
 				Title:  "Membuat Smoothie Sehat",
@@ -51,7 +51,7 @@ func MissionSeeder() Seeder {
 			},
 			{
 				ID:     3,
-				Image:  "",
+				Image:  "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/meditasi.jpg",
 				Exp:    200,
 				Calory: 50,
 				Title:  "Meditasi untuk Relaksasi",
@@ -71,7 +71,7 @@ func MissionSeeder() Seeder {
 			},
 			{
 				ID:     4,
-				Image:  "",
+				Image:  "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/jogging.jpg",
 				Exp:    250,
 				Calory: 300,
 				Title:  "Jogging Pagi di Taman",
@@ -91,7 +91,7 @@ func MissionSeeder() Seeder {
 			},
 			{
 				ID:     5,
-				Image:  "",
+				Image:  "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/book.jpg",
 				Exp:    120,
 				Calory: 0,
 				Title:  "Membaca Buku Inspiratif",

@@ -23,3 +23,11 @@ run:
 .PHONY: seed
 seed: 
 	go run cmd/app/main.go seed
+
+.PHONY: compose-up
+compose-up:
+	docker-compose up --detach --build
+
+.PHONY: compose-down
+compose-down:
+	docker-compose down

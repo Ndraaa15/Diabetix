@@ -52,11 +52,6 @@ func Run(params BootstrapParams) {
 	})
 
 	group := params.Srv.Party("/api/v1")
-	group.Use(func(ctx iris.Context) {
-		ctx.Application().Logger().Infof("Path: %s", ctx.Path())
-		ctx.Next()
-	})
-
 	for _, handler := range params.Handlers {
 		handler.InitRoutes(group)
 	}

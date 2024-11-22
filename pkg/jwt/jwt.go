@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -43,16 +44,16 @@ func DecodeToken(token string) (*JWTClaims, error) {
 	})
 
 	if err != nil {
-		return &JWTClaims{}, ErrInvalidSignature
+		return &JWTClaims{}, ErrInvalidSignature.WithError(err)
 	}
 
 	if !decoded.Valid {
-		return &JWTClaims{}, ErrInvalidTokenExpired
+		return &JWTClaims{}, ErrInvalidTokenExpired.WithError(errors.New("invalid token"))
 	}
 
 	claims, ok := decoded.Claims.(*JWTClaims)
 	if !ok {
-		return &JWTClaims{}, ErrFailedClaimJWT
+		return &JWTClaims{}, ErrFailedClaimJWT.WithError(errors.New("failed claim jwt"))
 	}
 
 	return claims, nil

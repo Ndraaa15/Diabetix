@@ -21,8 +21,7 @@ func Authentication() iris.Handler {
 
 		token := strings.SplitN(header, " ", 2)
 		if token[0] != "Bearer" {
-			ctx.StatusCode(iris.StatusUnauthorized)
-			ctx.JSON(iris.Map{
+			ctx.StopWithJSON(iris.StatusUnauthorized, iris.Map{
 				"message": "Unauthorized",
 			})
 			return
@@ -30,8 +29,7 @@ func Authentication() iris.Handler {
 
 		claims, err := jwt.DecodeToken(token[1])
 		if err != nil {
-			ctx.StatusCode(iris.StatusUnauthorized)
-			ctx.JSON(iris.Map{
+			ctx.StopWithJSON(iris.StatusUnauthorized, iris.Map{
 				"message": err.Error(),
 			})
 			return
