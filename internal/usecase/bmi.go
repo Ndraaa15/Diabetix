@@ -54,14 +54,20 @@ func (uc *BMIUsecase) CreateBMI(ctx context.Context, req dto.CreateBMIRequest, u
 	}
 
 	bmiFactor := req.Weight / ((req.Height / 100) * (req.Height / 100))
-	var bmiStatus string
+	var bmiStatus domain.BMIStatus
 	switch {
 	case bmiFactor < 18.5:
-		bmiStatus = "Underweight"
+		bmiStatus = domain.BMIStatusUnderweight
 	case bmiFactor >= 18.5 && bmiFactor < 24.9:
-		bmiStatus = "Normal"
-	case bmiFactor >= 25:
-		bmiStatus = "Overweight"
+		bmiStatus = domain.BMIStatusNormal
+	case bmiFactor >= 25 && bmiFactor < 29.9:
+		bmiStatus = domain.BMIStatusOverweight
+	case bmiFactor >= 30 && bmiFactor <= 34.9:
+		bmiStatus = domain.BMIStatusObesityI
+	case bmiFactor >= 35 && bmiFactor <= 39.9:
+		bmiStatus = domain.BMIStatusObesityII
+	case bmiFactor > 39.9:
+		bmiStatus = domain.BMIStatusObesityIII
 	}
 
 	data.BMI = bmiFactor

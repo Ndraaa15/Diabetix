@@ -9,11 +9,12 @@ func PersonalizationSeeder() Seeder {
 	return func(db *gorm.DB) error {
 		personalization := []domain.Personalization{
 			{
-				UserID:         "1854723870678847488",
-				Gender:         "Male",
-				Age:            18,
-				FrequenceSport: 2,
-				MaxGlucose:     50.0,
+				UserID:              "1854723870678847488",
+				Gender:              domain.PersonalizationGenderMale,
+				Age:                 18,
+				FrequenceSport:      domain.PersonalizationFrequenceSportOncePerWeek,
+				MaxGlucose:          50.0,
+				DiabetesInheritance: false,
 			},
 		}
 

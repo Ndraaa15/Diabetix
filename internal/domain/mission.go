@@ -17,7 +17,7 @@ type Mission struct {
 }
 
 type UserMission struct {
-	UserID    string    `json:"userID" gorm:"type:varchar(255);primaryKey"`
+	UserID    string    `json:"userID" gorm:"type:varchar(19);primaryKey"`
 	MissionID uint64    `json:"missionID" gorm:"type:integer;primaryKey"`
 	Mission   Mission   `json:"mission" gorm:"foreignKey:MissionID;references:ID"`
 	IsDone    bool      `json:"isDone" gorm:"type:boolean;not null;default:false"`

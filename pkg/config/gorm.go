@@ -25,6 +25,8 @@ func NewGorm(env *env.Env) *gorm.DB {
 		Logger:      logger.Default.LogMode(logger.Info),
 	})
 
+	db.Debug()
+
 	if err != nil {
 		zap.S().Fatalf("Unable to connect to database: %v", err)
 	}

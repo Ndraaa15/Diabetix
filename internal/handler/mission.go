@@ -8,6 +8,7 @@ import (
 	"github.com/Ndraaa15/diabetix-server/cmd/bootstrap"
 	"github.com/Ndraaa15/diabetix-server/internal/middleware"
 	"github.com/Ndraaa15/diabetix-server/internal/usecase"
+	"github.com/Ndraaa15/diabetix-server/pkg/errx"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
 )
@@ -45,8 +46,13 @@ func (h *MissionHandler) GetAllUserMission(ctx iris.Context) {
 
 	mission, err := h.missionUsecase.GetAllUserMission(c, userID)
 	if err != nil {
-		ctx.StopWithJSON(iris.StatusInternalServerError, err)
-		return
+		if errx, ok := err.(*errx.Errx); ok {
+			ctx.StopWithJSON(errx.Code, iris.Map{
+				"message": errx.Message,
+				"error":   errx.Err.Error(),
+			})
+			return
+		}
 	}
 
 	ctx.StopWithJSON(iris.StatusOK, iris.Map{
@@ -80,8 +86,13 @@ func (h *MissionHandler) AcceptMissionHandler(ctx iris.Context) {
 
 	err = h.missionUsecase.UpdateUserMission(c, userID, missionID)
 	if err != nil {
-		ctx.StopWithJSON(iris.StatusInternalServerError, err)
-		return
+		if errx, ok := err.(*errx.Errx); ok {
+			ctx.StopWithJSON(errx.Code, iris.Map{
+				"message": errx.Message,
+				"error":   errx.Err.Error(),
+			})
+			return
+		}
 	}
 
 	ctx.StopWithJSON(iris.StatusOK, iris.Map{

@@ -16,6 +16,7 @@ type IUserStore interface {
 	GetLatestUserMission(ctx context.Context, userID string) ([]domain.UserMission, error)
 	GetCurrentBMI(ctx context.Context, userID string) (domain.BMI, error)
 	GetCurrentTracker(ctx context.Context, userID string) (domain.Tracker, error)
+	UpdateUser(ctx context.Context, user domain.User) error
 }
 
 type UserStore struct {
@@ -54,7 +55,19 @@ func (r *UserStore) CreatePersonalization(ctx context.Context, personalization d
 }
 
 func (r *UserStore) WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error {
-	return r.db.Transaction(fn)
+	tx := r.db.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	if err := fn(tx); err != nil {
+		if rbErr := tx.Rollback().Error; rbErr != nil {
+			return rbErr
+		}
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (r *UserStore) GetLatestArticle(ctx context.Context, userID string) ([]domain.ArticleResponse, error) {
@@ -98,4 +111,8 @@ func (r *UserStore) GetCurrentTracker(ctx context.Context, userID string) (domai
 	}
 
 	return tracker, nil
+}
+
+func (r *UserStore) UpdateUser(ctx context.Context, user domain.User) error {
+	return r.db.WithContext(ctx).Model(&domain.User{}).Where("id = ?", user.ID).Updates(&user).Error
 }

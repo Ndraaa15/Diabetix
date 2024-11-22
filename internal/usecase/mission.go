@@ -73,22 +73,21 @@ func (uc *MissionUsecase) UpdateUserMission(ctx context.Context, userID string, 
 
 	user.CurrentExp += userMission.Mission.Exp
 
-	if user.CurrentExp+userMission.Mission.Exp >= user.Level.TotalExp {
-		for user.CurrentExp+userMission.Mission.Exp >= user.Level.TotalExp {
-			level, err := uc.missionStore.GetLevelByID(ctx, user.LevelID)
-			if err != nil {
-				return errx.New().
-					WithCode(iris.StatusInternalServerError).
-					WithMessage("Failed to get level").
-					WithError(err)
-			}
+	for user.CurrentExp >= user.Level.TotalExp {
+		level, err := uc.missionStore.GetLevelByID(ctx, user.LevelID)
+		if err != nil {
+			return errx.New().
+				WithCode(iris.StatusInternalServerError).
+				WithMessage("Failed to get level").
+				WithError(err)
+		}
 
-			user.CurrentExp = (user.CurrentExp + userMission.Mission.Exp) - user.Level.TotalExp
-			user.LevelID += level.NextLevel
+		user.CurrentExp -= user.Level.TotalExp
+		user.LevelID = level.NextLevel
 
-			if level.NextLevel == 0 {
-				break
-			}
+		if level.NextLevel == 0 {
+			user.CurrentExp = 0
+			break
 		}
 	}
 

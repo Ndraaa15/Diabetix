@@ -26,5 +26,5 @@ func (e *Errx) WithError(err error) *Errx {
 }
 
 func (e *Errx) Error() string {
-	return e.Message
+	return e.Err.Error()
 }
