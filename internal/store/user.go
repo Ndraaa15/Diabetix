@@ -8,13 +8,17 @@ import (
 )
 
 type IUserStore interface {
-	GetProfile(ctx context.Context, userID string) (domain.User, error)
+	GetUserByID(ctx context.Context, userID string) (domain.User, error)
+
 	CreateBMI(ctx context.Context, bmi domain.BMI) (domain.BMI, error)
+	GetCurrentBMI(ctx context.Context, userID string) (domain.BMI, error)
+
 	CreatePersonalization(ctx context.Context, personalization domain.Personalization) (domain.Personalization, error)
+
 	WithTransaction(ctx context.Context, fn func(tx *gorm.DB) error) error
+
 	GetLatestArticle(ctx context.Context, userID string) ([]domain.ArticleResponse, error)
 	GetLatestUserMission(ctx context.Context, userID string) ([]domain.UserMission, error)
-	GetCurrentBMI(ctx context.Context, userID string) (domain.BMI, error)
 	GetCurrentTracker(ctx context.Context, userID string) (domain.Tracker, error)
 	UpdateUser(ctx context.Context, user domain.User) error
 }
@@ -29,7 +33,7 @@ func NewUserStore(db *gorm.DB) IUserStore {
 	}
 }
 
-func (r *UserStore) GetProfile(ctx context.Context, userID string) (domain.User, error) {
+func (r *UserStore) GetUserByID(ctx context.Context, userID string) (domain.User, error) {
 	var profile domain.User
 	if err := r.db.WithContext(ctx).Model(&domain.User{}).Preload("Personalization").Preload("Level").Where("id = ?", userID).First(&profile).Error; err != nil {
 		return domain.User{}, err

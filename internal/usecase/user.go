@@ -30,7 +30,7 @@ func NewUserUsecase(userStore store.IUserStore) IUserUsecase {
 	}
 }
 func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.CreatePersonalizationRequest) error {
-	user, err := uc.userStore.GetProfile(ctx, req.UserID)
+	user, err := uc.userStore.GetUserByID(ctx, req.UserID)
 	if err != nil {
 		return errx.New().
 			WithCode(iris.StatusNotFound).
@@ -49,6 +49,7 @@ func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.Create
 	if err != nil {
 		return err
 	}
+
 	gender, err := util.ParsePersonalizationGender(req.Gender)
 	if err != nil {
 		return err
@@ -66,6 +67,16 @@ func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.Create
 		maxGlucose *= 0.05
 	} else {
 		maxGlucose *= 0.1
+	}
+
+	if frequenceSport == domain.PersonalizationFrequenceSportOncePerWeek {
+		maxGlucose *= 1.2
+	} else if frequenceSport == domain.PersonalizationFrequenceSportOnceToThreePerWeek {
+		maxGlucose *= 1.3
+	} else if frequenceSport == domain.PersonalizationFrequenceSportFourToFiveTimesPerWeek {
+		maxGlucose *= 1.550
+	} else if frequenceSport == domain.PersonalizationFrequenceSportFiveToSevenTimesPerWeek {
+		maxGlucose *= 1.725
 	}
 
 	personalization := domain.Personalization{
@@ -121,17 +132,14 @@ func (uc *UserUsecase) CreatePersonalization(ctx context.Context, req dto.Create
 	})
 
 	if err != nil {
-		return errx.New().
-			WithCode(iris.StatusInternalServerError).
-			WithMessage("Failed to create personalization").
-			WithError(err)
+		return err
 	}
 
 	return nil
 }
 
 func (uc *UserUsecase) GetProfile(ctx context.Context, userID string) (domain.User, error) {
-	profile, err := uc.userStore.GetProfile(ctx, userID)
+	profile, err := uc.userStore.GetUserByID(ctx, userID)
 	if err != nil {
 		return domain.User{}, err
 	}

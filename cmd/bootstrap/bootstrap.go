@@ -1,12 +1,15 @@
 package bootstrap
 
 import (
+	"context"
 	"fmt"
 	"time"
 
+	"github.com/Ndraaa15/diabetix-server/pkg/cronx"
 	"github.com/Ndraaa15/diabetix-server/pkg/env"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
+	"github.com/robfig/cron/v3"
 	"go.uber.org/dig"
 	"go.uber.org/zap"
 )
@@ -25,10 +28,14 @@ type BootstrapParams struct {
 	Srv      *iris.Application
 	Zap      *zap.Logger
 	Env      *env.Env
+	Cron     *cron.Cron
+	Db       *gorm.Gorm
 	Handlers []Handler `group:"handlers"`
 }
 
 func Run(params BootstrapParams) {
+	ctx := context.Background()
+
 	params.Srv.Use(func(ctx iris.Context) {
 		start := time.Now()
 
@@ -55,6 +62,11 @@ func Run(params BootstrapParams) {
 	for _, handler := range params.Handlers {
 		handler.InitRoutes(group)
 	}
+
+	params.Cron.AddFunc("@daily", 
+	err := cronx.CreateTracker(ctx, params.Db)
+	err = cronx.GenerateMission(ctx, params.Db)
+)
 
 	params.Zap.Sugar().Info("Server is running on port 8080...")
 	if err := params.Srv.Run(iris.Addr(fmt.Sprintf("%s:%s", params.Env.AppAddr, params.Env.AppPort))); err != nil {

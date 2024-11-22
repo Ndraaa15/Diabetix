@@ -5,12 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"mime/multipart"
-	"time"
 
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/internal/store"
 	"github.com/Ndraaa15/diabetix-server/pkg/gemini"
+	"github.com/Ndraaa15/diabetix-server/pkg/util"
 	"gorm.io/gorm"
 )
 
@@ -33,7 +33,7 @@ func NewTrackerUsecase(trackerStore store.ITrackerStore, gemini *gemini.Gemini) 
 }
 
 func (uc *TrackerUsecase) PredictFood(ctx context.Context, fileHeader *multipart.FileHeader, file multipart.File, userID string) (dto.PredictFoodResponse, error) {
-	tracker, err := uc.trackerStore.GetCurrentTracker(ctx, userID, time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local))
+	tracker, err := uc.trackerStore.GetCurrentTracker(ctx, userID, util.GetCurrentDate())
 	if err != nil {
 		return dto.PredictFoodResponse{}, err
 	}
@@ -59,13 +59,14 @@ func (uc *TrackerUsecase) PredictFood(ctx context.Context, fileHeader *multipart
 	if err != nil {
 		return dto.PredictFoodResponse{}, err
 	}
-	var levelGlucose string
+
+	var levelGlycemic string
 	if resultGenerate.Glucose < personalization.MaxGlucose*0.7 {
-		levelGlucose = "Low"
+		levelGlycemic = "Low"
 	} else if resultGenerate.Glucose < personalization.MaxGlucose {
-		levelGlucose = "Normal"
+		levelGlycemic = "Normal"
 	} else {
-		levelGlucose = "High"
+		levelGlycemic = "High"
 	}
 
 	response := dto.PredictFoodResponse{
@@ -75,10 +76,11 @@ func (uc *TrackerUsecase) PredictFood(ctx context.Context, fileHeader *multipart
 		Fat:            resultGenerate.Fat,
 		Carbohydrate:   resultGenerate.Carbohydrate,
 		Protein:        resultGenerate.Protein,
+		IndexGlycemic:  resultGenerate.IndexGlycemic,
 		Advice:         resultGenerate.Advice,
 		MaxGlucose:     personalization.MaxGlucose,
 		CurrentGlucose: tracker.TotalGlucose,
-		LevelGlucose:   levelGlucose,
+		LevelGlycemic:  levelGlycemic,
 	}
 
 	return response, nil
@@ -92,12 +94,12 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 			err     error
 		)
 
-		report, err = uc.trackerStore.GetCurrentReport(ctx, userID, time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local))
+		report, err = uc.trackerStore.GetCurrentReport(ctx, userID, util.GetCurrentDate())
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			report, err = uc.trackerStore.CreateReport(ctx, domain.Report{
 				UserID:    userID,
-				StartDate: time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local),
-				EndDate:   time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day()+7, 23, 59, 59, 0, time.Local),
+				StartDate: util.GetCurrentDate(),
+				EndDate:   util.GetCurrentDate().AddDate(0, 0, 7),
 				Advice:    "",
 			})
 
@@ -108,7 +110,7 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 			return err
 		}
 
-		tracker, err = uc.trackerStore.GetCurrentTracker(ctx, userID, time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local))
+		tracker, err = uc.trackerStore.GetCurrentTracker(ctx, userID, util.GetCurrentDate())
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			tracker, err = uc.trackerStore.CreateTracker(ctx, domain.Tracker{
 				TotalGlucose: req.Glucose,
@@ -146,14 +148,15 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 		tracker.Status = status
 
 		data := domain.TrackerDetail{
-			FoodName:     req.FoodName,
-			FoodImage:    req.FoodImage,
-			Glucose:      req.Glucose,
-			Calory:       req.Calory,
-			Fat:          req.Fat,
-			Protein:      req.Protein,
-			Carbohydrate: req.Carbohydrate,
-			TrackerID:    tracker.ID,
+			FoodName:      req.FoodName,
+			FoodImage:     req.FoodImage,
+			Glucose:       req.Glucose,
+			Calory:        req.Calory,
+			Fat:           req.Fat,
+			Protein:       req.Protein,
+			IndexGlycemic: req.IndexGlycemic,
+			Carbohydrate:  req.Carbohydrate,
+			TrackerID:     tracker.ID,
 		}
 
 		if err := uc.trackerStore.UpdateTracker(ctx, tracker); err != nil {

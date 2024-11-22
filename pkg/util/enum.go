@@ -29,9 +29,9 @@ func ParsePersonalizationFrequenceSport(frequenceSport string) (domain.Personali
 
 func ParsePersonalizationGender(gender string) (domain.PersonalizationGender, error) {
 	switch gender {
-	case "Male":
+	case "Laki-Laki":
 		return domain.PersonalizationGenderMale, nil
-	case "Female":
+	case "Perempuan":
 		return domain.PersonalizationGenderFemale, nil
 	default:
 		return "", errx.New().

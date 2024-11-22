@@ -15,13 +15,18 @@ import (
 )
 
 type PredictFoodResponseWithGenai struct {
-	FoodName     string  `json:"foodName"`
-	Glucose      float64 `json:"glucose"`
-	Calories     float64 `json:"calories"`
-	Fat          float64 `json:"fat"`
-	Carbohydrate float64 `json:"carbohidrate"`
-	Protein      float64 `json:"protein"`
-	Advice       string  `json:"advice"`
+	FoodName      string  `json:"foodName"`
+	Glucose       float64 `json:"glucose"`
+	Calories      float64 `json:"calories"`
+	Fat           float64 `json:"fat"`
+	Carbohydrate  float64 `json:"carbohidrate"`
+	Protein       float64 `json:"protein"`
+	IndexGlycemic float64 `json:"indexGlycemic"`
+	Advice        string  `json:"advice"`
+}
+
+type ReportAdvice struct {
+	Advice string `json:"advice"`
 }
 
 type Gemini struct {
@@ -33,7 +38,7 @@ func NewGemini(env *env.Env) *Gemini {
 
 	client, err := genai.NewClient(ctx, option.WithAPIKey(env.GeminiApiKey))
 	if err != nil {
-		zap.S().Fatal(err)
+		zap.S().Fatalf("Failed to create Gemini client: %v", err)
 	}
 
 	model := client.GenerativeModel(env.GeminiModel)
@@ -61,6 +66,7 @@ Here is the JSON structure for the response:
 		"fat": "float64",
 		"carbohidrate": "float64",
 		"protein": "float64",
+		"indexGlycemic": "float64",
 		"advice": "string"
 }
 
@@ -100,6 +106,56 @@ The advice should address balancing glucose, calorie, fat, carbohydrate, and pro
 	err = json.Unmarshal([]byte(jsonStr), &response)
 	if err != nil {
 		return PredictFoodResponseWithGenai{}, err
+	}
+
+	return response, nil
+}
+
+func (g *Gemini) GenerateReportAdvice(ctx context.Context, previousReports domain.Report) (ReportAdvice, error) {
+	previousReportJSON, err := json.Marshal(previousReports)
+	if err != nil {
+		return ReportAdvice{}, err
+	}
+
+	prompt := fmt.Sprintf(`Analyze the user's daily reports to provide advice based on the user's daily glucose levels. The user's daily reports are provided as an array of JSON objects.
+
+	Here is the JSON structure for the response:
+	{
+		"advice": "string"
+	}
+
+	Previous activity and previous food consumption (JSON format):
+	%s
+	`, previousReportJSON)
+
+	genaiParts := []genai.Part{
+		genai.Text(prompt),
+		genai.Text("Please provide using Indonesia Language"),
+	}
+
+	content, err := g.model.GenerateContent(ctx, genaiParts...)
+	if err != nil {
+		return ReportAdvice{}, err
+	}
+
+	part := content.Candidates[0].Content.Parts[0]
+	jsonByte, err := json.Marshal(part)
+	if err != nil {
+		return ReportAdvice{}, nil
+	}
+
+	jsonStr, err := strconv.Unquote(string(jsonByte))
+	if err != nil {
+		return ReportAdvice{}, err
+	}
+
+	jsonStr = strings.Replace(jsonStr, "```json", "", -1)
+	jsonStr = strings.Replace(jsonStr, "```", "", -1)
+
+	var response ReportAdvice
+	err = json.Unmarshal([]byte(jsonStr), &response)
+	if err != nil {
+		return ReportAdvice{}, err
 	}
 
 	return response, nil

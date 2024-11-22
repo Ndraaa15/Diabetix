@@ -6,6 +6,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cloudinary/cloudinary-go v1.7.0
 	github.com/kataras/iris/v12 v12.2.11
+	github.com/robfig/cron/v3 v3.0.0
 	github.com/spf13/viper v1.19.0
 	go.uber.org/dig v1.18.0
 	go.uber.org/zap v1.27.0

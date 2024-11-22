@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/Ndraaa15/diabetix-server/internal/domain"
 	"github.com/Ndraaa15/diabetix-server/internal/dto"
 	"github.com/Ndraaa15/diabetix-server/pkg/errx"
 	"github.com/kataras/iris/v12"
@@ -55,4 +56,16 @@ func ParseGetReportsFilter(ctx iris.Context, filter *dto.GetReportsFilter) error
 	}
 
 	return nil
+}
+
+func GetCurrentDate() time.Time {
+	return time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+}
+
+func GenerateRandomMission(mission domain.Mission, total int) []domain.Mission {
+	missions := make([]domain.Mission, total)
+	for i := 0; i < total; i++ {
+		missions[i] = mission
+	}
+	return missions
 }

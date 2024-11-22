@@ -25,6 +25,6 @@ const (
 type PersonalizationGender string
 
 const (
-	PersonalizationGenderMale   PersonalizationGender = "Male"
-	PersonalizationGenderFemale PersonalizationGender = "Female"
+	PersonalizationGenderMale   PersonalizationGender = "Laki-Laki"
+	PersonalizationGenderFemale PersonalizationGender = "Perempuan"
 )
