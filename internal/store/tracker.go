@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"sort"
 	"time"
 
 	"github.com/Ndraaa15/diabetix-server/internal/domain"
@@ -134,6 +135,10 @@ func (r *TrackerStore) GetSevenLatestTrackers(ctx context.Context, userID string
 	if err != nil {
 		return nil, err
 	}
+
+	sort.Slice(trackers, func(i, j int) bool {
+		return trackers[i].CreatedAt.Before(trackers[j].CreatedAt)
+	})
 
 	return trackers, nil
 }
