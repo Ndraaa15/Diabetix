@@ -14,32 +14,32 @@ func ArticleSeeder() Seeder {
 				ID:       1,
 				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/type_diabetes.jpeg",
 				Author:   "Gede Indra Adi Brata",
-				Title:    "Understanding Diabetes: Types and Causes",
+				Title:    "Memahami Diabetes: Jenis dan Penyebabnya",
 				Category: domain.ArticleCategoryMedical,
 				Body: `
-## Understanding Diabetes: Types and Causes  
-
-Diabetes is a chronic health condition that affects the way your body converts food into energy. This occurs when the body either does not produce enough insulin or cannot effectively use the insulin it produces.  
-
-### Types of Diabetes  
-
-1. **Type 1 Diabetes**  
-  Type 1 diabetes is an autoimmune condition where the body attacks insulin-producing cells in the pancreas. It typically develops in childhood or adolescence and requires insulin therapy for management.  
-
-2. **Type 2 Diabetes**  
-  Type 2 diabetes is more common and usually develops in adulthood. It occurs when the body becomes resistant to insulin or when the pancreas does not produce enough insulin.  
-
-3. **Gestational Diabetes**  
-  Gestational diabetes occurs during pregnancy and can pose risks to both mother and baby. While it often resolves after childbirth, it increases the risk of developing type 2 diabetes later in life.  
-
-### Causes and Risk Factors  
-
-- **Genetic Factors**: A family history of diabetes can increase your risk.  
-- **Lifestyle Choices**: Poor diet, physical inactivity, and obesity are major contributors.  
-- **Age**: The risk of type 2 diabetes increases with age, especially after 45.  
-- **Ethnicity**: Some ethnic groups are more prone to diabetes, such as African Americans, Hispanics, and Asians.  
-
-Early diagnosis and lifestyle modifications are essential to managing diabetes and reducing complications.  
+		## Memahami Diabetes: Jenis dan Penyebabnya  
+		
+		Diabetes adalah kondisi kesehatan kronis yang memengaruhi cara tubuh mengubah makanan menjadi energi. Hal ini terjadi ketika tubuh tidak memproduksi cukup insulin atau tidak dapat menggunakan insulin dengan efektif.  
+		
+		### Jenis Diabetes  
+		
+		1. **Diabetes Tipe 1**  
+			Diabetes tipe 1 adalah kondisi autoimun di mana tubuh menyerang sel-sel penghasil insulin di pankreas. Biasanya berkembang pada masa kanak-kanak atau remaja dan memerlukan terapi insulin untuk pengelolaannya.  
+		
+		2. **Diabetes Tipe 2**  
+			Diabetes tipe 2 lebih umum dan biasanya berkembang pada usia dewasa. Terjadi ketika tubuh menjadi resisten terhadap insulin atau ketika pankreas tidak menghasilkan cukup insulin.  
+		
+		3. **Diabetes Gestasional**  
+			Diabetes gestasional terjadi selama kehamilan dan dapat menimbulkan risiko bagi ibu dan bayi. Meskipun sering sembuh setelah melahirkan, kondisi ini meningkatkan risiko diabetes tipe 2 di kemudian hari.  
+		
+		### Penyebab dan Faktor Risiko  
+		
+		- **Faktor Genetik**: Riwayat keluarga dengan diabetes dapat meningkatkan risiko.  
+		- **Gaya Hidup**: Pola makan buruk, kurang aktivitas fisik, dan obesitas adalah faktor utama.  
+		- **Usia**: Risiko diabetes tipe 2 meningkat seiring bertambahnya usia, terutama setelah 45 tahun.  
+		- **Etnisitas**: Beberapa kelompok etnis, seperti Afrika-Amerika, Hispanik, dan Asia, lebih rentan terhadap diabetes.  
+		
+		Diagnosis dini dan perubahan gaya hidup sangat penting untuk mengelola diabetes dan mengurangi komplikasi.  
 				`,
 				Date: time.Now().AddDate(0, 0, -1),
 			},
@@ -47,34 +47,34 @@ Early diagnosis and lifestyle modifications are essential to managing diabetes a
 				ID:       2,
 				Author:   "Gede Indra Adi Brata",
 				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/nutrition_diabetes.jpg",
-				Title:    " The Role of Nutrition in Diabetes Management",
+				Title:    "Pentingnya Nutrisi dalam Pengelolaan Diabetes",
 				Category: domain.ArticleCategorySport,
 				Body: `
-## The Role of Nutrition in Diabetes Management  
-
-Managing diabetes effectively requires a balanced and well-planned diet. Nutrition plays a crucial role in regulating blood sugar levels and preventing complications.  
-
-### Key Principles of a Diabetic Diet  
-
-1. **Focus on Low-Glycemic Index Foods**  
-  Foods with a low glycemic index, such as whole grains, legumes, and non-starchy vegetables, help maintain stable blood sugar levels.  
-
-2. **Include Healthy Fats**  
-  Incorporate sources of healthy fats like avocados, nuts, seeds, and olive oil to support overall health without spiking blood sugar.  
-
-3. **Opt for Lean Proteins**  
-  Lean proteins such as chicken, fish, tofu, and legumes help control hunger and stabilize glucose levels.  
-
-4. **Monitor Carbohydrate Intake**  
-  Carbohydrates have the most significant impact on blood sugar. Choose complex carbs and monitor portion sizes.  
-
-### Example Meal Plan  
-
-- **Breakfast**: Oatmeal with fresh berries and a sprinkle of chia seeds.  
-- **Lunch**: Grilled chicken salad with mixed greens, cherry tomatoes, and olive oil dressing.  
-- **Dinner**: Steamed fish with quinoa and roasted vegetables.  
-
-Balanced nutrition, combined with regular exercise, forms the foundation of effective diabetes management.  
+		## Pentingnya Nutrisi dalam Pengelolaan Diabetes  
+		
+		Mengelola diabetes secara efektif memerlukan pola makan yang seimbang dan terencana. Nutrisi memainkan peran penting dalam mengatur kadar gula darah dan mencegah komplikasi.  
+		
+		### Prinsip Utama Pola Makan untuk Diabetes  
+		
+		1. **Fokus pada Makanan dengan Indeks Glikemik Rendah**  
+			Makanan seperti biji-bijian utuh, kacang-kacangan, dan sayuran non-tepung membantu menjaga kadar gula darah tetap stabil.  
+		
+		2. **Konsumsi Lemak Sehat**  
+			Sertakan lemak sehat seperti alpukat, kacang-kacangan, biji-bijian, dan minyak zaitun untuk mendukung kesehatan secara keseluruhan tanpa meningkatkan gula darah.  
+		
+		3. **Pilih Protein Tanpa Lemak**  
+			Protein tanpa lemak seperti ayam, ikan, tahu, dan kacang-kacangan membantu mengontrol rasa lapar dan menstabilkan kadar glukosa.  
+		
+		4. **Pantau Asupan Karbohidrat**  
+			Karbohidrat memiliki dampak terbesar pada gula darah. Pilih karbohidrat kompleks dan perhatikan ukuran porsinya.  
+		
+		### Contoh Rencana Makan  
+		
+		- **Sarapan**: Oatmeal dengan buah beri segar dan taburan biji chia.  
+		- **Makan Siang**: Salad ayam panggang dengan sayuran hijau, tomat ceri, dan dressing minyak zaitun.  
+		- **Makan Malam**: Ikan kukus dengan quinoa dan sayuran panggang.  
+		
+		Nutrisi yang seimbang, dikombinasikan dengan olahraga teratur, membentuk dasar pengelolaan diabetes yang efektif.  
 				`,
 				Date: time.Now().AddDate(0, 0, -2),
 			},
@@ -82,37 +82,37 @@ Balanced nutrition, combined with regular exercise, forms the foundation of effe
 				ID:       3,
 				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/exercise_diabetes.jpg",
 				Author:   "Gede Indra Adi Brata",
-				Title:    "Exercise and Diabetes: What You Need to Know",
+				Title:    "Olahraga dan Diabetes: Apa yang Harus Anda Ketahui",
 				Category: domain.ArticleCategorySport,
 				Body: `
-## Exercise and Diabetes: What You Need to Know  
-
-Regular physical activity is essential for managing diabetes and improving overall health. Exercise helps regulate blood sugar, enhance insulin sensitivity, and reduce the risk of complications.  
-
-### Benefits of Exercise for Diabetics  
-
-1. **Improved Insulin Sensitivity**  
-  Exercise makes your cells more responsive to insulin, lowering blood sugar levels.  
-
-2. **Weight Management**  
-  Regular workouts help maintain a healthy weight, a critical factor in managing type 2 diabetes.  
-
-3. **Cardiovascular Health**  
-  Physical activity reduces the risk of heart disease, which is a common complication of diabetes.  
-
-### Recommended Exercises  
-
-- **Aerobic Exercise**: Walking, cycling, or swimming for at least 150 minutes a week.  
-- **Strength Training**: Lifting weights or resistance band exercises 2-3 times a week.  
-- **Flexibility and Balance**: Yoga or Tai Chi to improve balance and reduce stress.  
-
-### Tips for Safe Exercise  
-
-- Monitor blood sugar before and after exercise.  
-- Stay hydrated and carry a quick source of sugar in case of hypoglycemia.  
-- Wear comfortable, supportive shoes to prevent foot injuries.  
-
-Incorporating exercise into your routine can significantly enhance your quality of life as a diabetic.   
+		## Olahraga dan Diabetes: Apa yang Harus Anda Ketahui  
+		
+		Aktivitas fisik teratur sangat penting untuk mengelola diabetes dan meningkatkan kesehatan secara keseluruhan. Olahraga membantu mengatur gula darah, meningkatkan sensitivitas insulin, dan mengurangi risiko komplikasi.  
+		
+		### Manfaat Olahraga bagi Penderita Diabetes  
+		
+		1. **Peningkatan Sensitivitas Insulin**  
+			Olahraga membuat sel-sel tubuh lebih responsif terhadap insulin, sehingga menurunkan kadar gula darah.  
+		
+		2. **Pengelolaan Berat Badan**  
+			Latihan rutin membantu menjaga berat badan yang sehat, faktor penting dalam mengelola diabetes tipe 2.  
+		
+		3. **Kesehatan Kardiovaskular**  
+			Aktivitas fisik mengurangi risiko penyakit jantung, komplikasi umum dari diabetes.  
+		
+		### Jenis Olahraga yang Dianjurkan  
+		
+		- **Aerobik**: Jalan kaki, bersepeda, atau berenang setidaknya 150 menit per minggu.  
+		- **Latihan Kekuatan**: Angkat beban atau latihan dengan resistance band 2-3 kali seminggu.  
+		- **Fleksibilitas dan Keseimbangan**: Yoga atau Tai Chi untuk meningkatkan keseimbangan dan mengurangi stres.  
+		
+		### Tips Berolahraga dengan Aman  
+		
+		- Pantau kadar gula darah sebelum dan sesudah berolahraga.  
+		- Tetap terhidrasi dan bawa sumber gula cepat untuk mencegah hipoglikemia.  
+		- Kenakan sepatu yang nyaman dan mendukung untuk mencegah cedera kaki.  
+		
+		Mengintegrasikan olahraga ke dalam rutinitas harian Anda dapat secara signifikan meningkatkan kualitas hidup sebagai penderita diabetes.  
 				`,
 				Date: time.Now().AddDate(0, 0, -3),
 			},
@@ -120,33 +120,33 @@ Incorporating exercise into your routine can significantly enhance your quality 
 				ID:       4,
 				Author:   "Gede Indra Adi Brata",
 				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/sympton_diabetes.jpg",
-				Title:    "Recognizing Early Signs of Diabetes",
+				Title:    "Mengenali Gejala Awal Diabetes",
 				Category: domain.ArticleCategoryMedical,
 				Body: `
-## Recognizing Early Signs of Diabetes  
-
-Early detection of diabetes can prevent severe complications and allow for timely management. Understanding the warning signs is crucial for seeking prompt medical attention.  
-
-### Common Symptoms of Diabetes  
-
-1. **Increased Thirst and Frequent Urination**  
-  High blood sugar levels lead to excessive thirst and frequent urination as the body tries to flush out excess glucose.  
-
-2. **Fatigue**  
-  When glucose cannot enter cells for energy, it results in persistent fatigue.  
-
-3. **Unexplained Weight Loss**  
-  Sudden weight loss can occur due to the body breaking down fat and muscle for energy.  
-
-4. **Blurred Vision**  
-  High blood sugar levels can cause swelling in the lens of the eye, leading to blurred vision.  
-
-5. **Slow Healing Wounds**  
-  Diabetes impairs circulation and affects the immune system, causing slow healing of cuts and wounds.  
-
-### When to Seek Help  
-
-If you experience any of these symptoms, consult a healthcare professional immediately. Early intervention can significantly reduce the risk of complications.  
+		## Mengenali Gejala Awal Diabetes  
+		
+		Deteksi dini diabetes dapat mencegah komplikasi serius dan memungkinkan pengelolaan yang tepat waktu. Memahami tanda-tanda peringatan sangat penting untuk mencari perhatian medis segera.  
+		
+		### Gejala Umum Diabetes  
+		
+		1. **Haus Berlebih dan Sering Buang Air Kecil**  
+			Kadar gula darah tinggi menyebabkan haus berlebih dan sering buang air kecil karena tubuh mencoba mengeluarkan glukosa berlebih.  
+		
+		2. **Kelelahan**  
+			Ketika glukosa tidak dapat masuk ke sel untuk energi, hal ini menyebabkan kelelahan yang terus-menerus.  
+		
+		3. **Penurunan Berat Badan yang Tidak Bisa Dijelaskan**  
+			Penurunan berat badan tiba-tiba dapat terjadi karena tubuh memecah lemak dan otot untuk energi.  
+		
+		4. **Penglihatan Kabur**  
+			Kadar gula darah tinggi dapat menyebabkan pembengkakan pada lensa mata, yang menyebabkan penglihatan kabur.  
+		
+		5. **Luka yang Sulit Sembuh**  
+			Diabetes mengganggu sirkulasi dan memengaruhi sistem kekebalan tubuh, menyebabkan penyembuhan luka yang lambat.  
+		
+		### Kapan Harus Mencari Bantuan  
+		
+		Jika Anda mengalami salah satu gejala ini, konsultasikan dengan profesional kesehatan segera. Intervensi dini dapat secara signifikan mengurangi risiko komplikasi.  
 				`,
 				Date: time.Now().AddDate(0, 0, -7),
 			},
@@ -154,29 +154,29 @@ If you experience any of these symptoms, consult a healthcare professional immed
 				ID:       5,
 				Author:   "Gede Indra Adi Brata",
 				Image:    "https://arcudskzafkijqukfool.supabase.co/storage/v1/object/public/diabetix/myth_diabetes.jpg",
-				Title:    "Recognizing Early Signs of Diabetes",
+				Title:    "Mengungkap Mitos Umum Tentang Diabetes",
 				Category: domain.ArticleCategoryKnowledge,
 				Body: `
-## Debunking Common Myths About Diabetes  
-
-Misconceptions about diabetes can lead to fear and misinformation. Let's debunk some of the most common myths.  
-
-### Myth 1: Diabetes is Caused by Eating Too Much Sugar  
-**Truth**: While excessive sugar consumption can contribute to weight gain, which increases the risk of type 2 diabetes, it is not the sole cause. Genetics and lifestyle also play a significant role.  
-
-### Myth 2: Only Overweight People Get Diabetes  
-**Truth**: While obesity is a risk factor for type 2 diabetes, anyone, regardless of weight, can develop the condition.  
-
-### Myth 3: People with Diabetes Cannot Eat Carbohydrates  
-**Truth**: Diabetics can enjoy carbohydrates in moderation, focusing on complex carbs and portion control.  
-
-### Myth 4: Insulin is a Sign of Failing Health  
-**Truth**: Insulin therapy is a vital treatment for some people with diabetes and helps manage blood sugar levels effectively.  
-
-### Myth 5: Diabetes is Not a Serious Disease  
-**Truth**: If left unmanaged, diabetes can lead to severe complications like heart disease, kidney failure, and nerve damage.  
-
-Understanding the facts about diabetes empowers individuals to make informed decisions about their health.  
+		## Mengungkap Mitos Umum Tentang Diabetes  
+		
+		Kesalahpahaman tentang diabetes dapat menyebabkan ketakutan dan informasi yang salah. Mari kita ungkap beberapa mitos paling umum.  
+		
+		### Mitos 1: Diabetes Disebabkan oleh Makan Terlalu Banyak Gula  
+		**Fakta**: Meskipun konsumsi gula berlebih dapat menyebabkan kenaikan berat badan, yang meningkatkan risiko diabetes tipe 2, itu bukan satu-satunya penyebab. Genetika dan gaya hidup juga memainkan peran penting.  
+		
+		### Mitos 2: Hanya Orang Gemuk yang Bisa Terkena Diabetes  
+		**Fakta**: Meskipun obesitas meningkatkan risiko, orang dengan berat badan normal juga dapat terkena diabetes tipe 1 atau tipe 2.  
+		
+		### Mitos 3: Diabetes Selalu Diturunkan  
+		**Fakta**: Riwayat keluarga memang meningkatkan risiko, tetapi gaya hidup dan faktor lingkungan juga memengaruhi.  
+		
+		### Mitos 4: Penderita Diabetes Tidak Boleh Makan Karbohidrat  
+		**Fakta**: Penderita diabetes dapat makan karbohidrat, tetapi harus fokus pada sumber karbohidrat yang sehat dan memantau ukuran porsi.  
+		
+		### Mitos 5: Saya Tidak Memiliki Gejala, Jadi Saya Tidak Punya Diabetes  
+		**Fakta**: Diabetes tipe 2 sering berkembang perlahan dengan gejala minimal atau tanpa gejala. Skrining rutin penting, terutama bagi mereka yang memiliki faktor risiko.  
+		
+		Memahami fakta sebenarnya tentang diabetes dapat memberdayakan individu untuk membuat keputusan yang tepat tentang kesehatan mereka.  
 				`,
 				Date: time.Now().AddDate(0, 0, -5),
 			},

@@ -34,6 +34,7 @@ func main() {
 	mustProvide(config.NewZap)
 	mustProvide(config.NewGorm)
 	mustProvide(config.NewBigCache)
+	mustProvide(config.NewCron)
 	mustProvide(gomail.NewGomail)
 	mustProvide(env.New)
 	mustProvide(gemini.NewGemini)
@@ -66,8 +67,6 @@ func main() {
 
 	mustProvide(store.NewDoctorStore)
 	mustProvide(usecase.NewDoctorUsecase)
-
-	// mustProvide(config.NewCron())
 
 	mustProvide(handler.NewReportHandler, dig.Group("handlers"))
 	mustProvide(handler.NewMissionHandler, dig.Group("handlers"))

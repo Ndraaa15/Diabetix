@@ -218,6 +218,10 @@ func (uc *TrackerUsecase) AddFood(ctx context.Context, req dto.CreateTrackerDeta
 	})
 }
 func (r *TrackerUsecase) GetAllTracker(ctx context.Context, userID string) (dto.TrackerResponse, error) {
+	var (
+		currentTracker domain.Tracker
+	)
+
 	trackers, err := r.trackerStore.GetAllTracker(ctx, userID)
 	if err != nil {
 		return dto.TrackerResponse{}, errx.New().
@@ -226,8 +230,8 @@ func (r *TrackerUsecase) GetAllTracker(ctx context.Context, userID string) (dto.
 			WithError(err)
 	}
 
-	currentTracker, err := r.trackerStore.GetCurrentTracker(ctx, userID, util.GetCurrentDate())
-	if err != nil {
+	currentTracker, err = r.trackerStore.GetCurrentTracker(ctx, userID, util.GetCurrentDate())
+	if !errors.Is(err, gorm.ErrRecordNotFound) && err != nil {
 		return dto.TrackerResponse{}, errx.New().
 			WithCode(iris.StatusInternalServerError).
 			WithMessage("Failed to get current tracker").
